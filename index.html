@@ -4723,7 +4723,6 @@ input[type="number"]:focus { border-color: var(--accent); }
 
 <script>
 window._OUTLINE_ANIM_MODES = new Set(['outlinefill', 'illustfill', 'outlineonly', 'spec-text']);
-const _OUTLINE_ANIM_MODES = window._OUTLINE_ANIM_MODES;
 
 // ═══════════════════════════════════════════
 // INDEXEDDB PROJECT SYSTEM
@@ -8820,7 +8819,7 @@ function _fillGapsCanvas(src) {
   return fc;
 }
 
-const _OUTLINE_ANIM_MODES = window._OUTLINE_ANIM_MODES || new Set(['outlinefill','illustfill','outlineonly','spec-text']);
+var _OUTLINE_ANIM_MODES = window._OUTLINE_ANIM_MODES || new Set(['outlinefill','illustfill','outlineonly','spec-text']);
 
 function selectAnim(el) {
   pushUndoSnapshot();
