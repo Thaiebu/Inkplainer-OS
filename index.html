@@ -3728,11 +3728,11 @@ input[type="number"]:focus { border-color: var(--accent); }
   <!-- ── Sticky Tab Switcher ── -->
   <div class="sidebar-tabs">
     <div class="sidebar-tab-row">
-      <button class="sidebar-tab-btn active" id="stab-animation" onclick="switchSidebarTab('animation', true)">
+      <button class="sidebar-tab-btn active" id="stab-animation" onclick="switchSidebarTab('animation')">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="5,3 19,12 5,21"/></svg>
         Animation
       </button>
-      <button class="sidebar-tab-btn" id="stab-drawing" onclick="switchSidebarTab('drawing', true)">
+      <button class="sidebar-tab-btn" id="stab-drawing" onclick="switchSidebarTab('drawing')">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
         Drawing
       </button>
@@ -7927,36 +7927,13 @@ function syncDetectAlgButtons(alg) {
 }
 
 // ── Sidebar tab switcher ──────────────────────────────────────────────────────
-function switchSidebarTab(tab, userInitiated = false) {
+function switchSidebarTab(tab) {
   document.querySelectorAll('.sidebar-tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.sidebar-tab-pane').forEach(p => p.classList.remove('active'));
   const btn = document.getElementById('stab-' + tab);
   const pane = document.getElementById('sidebar-pane-' + tab);
   if (btn) btn.classList.add('active');
   if (pane) pane.classList.add('active');
-
-  if (userInitiated) {
-    let layer = getSelectedLayer();
-    if (!layer && state.layers && state.layers.length > 0) {
-      const fallbackId = state.selectedLayerId || state.layers[state.layers.length - 1].id;
-      selectLayer(fallbackId);
-      layer = getSelectedLayer();
-    }
-    const currentStyle = (layer && layer.animStyle) || state.animStyle;
-    const isCurrentDrawing = typeof _OUTLINE_ANIM_MODES !== 'undefined' && _OUTLINE_ANIM_MODES.has(currentStyle);
-
-    if (tab === 'drawing' && !isCurrentDrawing) {
-      const drawingOpt = document.querySelector('#sidebar-pane-drawing .anim-opt.selected') ||
-                         document.querySelector('#sidebar-pane-drawing .anim-opt[data-anim="illustfill"]') ||
-                         document.querySelector('#sidebar-pane-drawing .anim-opt');
-      if (drawingOpt) selectAnim(drawingOpt);
-    } else if (tab === 'animation' && isCurrentDrawing) {
-      const animOpt = document.querySelector('#sidebar-pane-animation .anim-opt.selected') ||
-                      document.querySelector('#sidebar-pane-animation .anim-opt[data-anim="chunkjump"]') ||
-                      document.querySelector('#sidebar-pane-animation .anim-opt');
-      if (animOpt) selectAnim(animOpt);
-    }
-  }
 }
 
 function selectDetectAlg(el) {
@@ -8876,9 +8853,9 @@ function selectAnim(el) {
   state.stOutlineCanvas = null;
   state.stFillPts = null;
 
-  // Auto-switch sidebar tab based on anim category (sync only, without recursive userInitiated switch)
+  // Auto-switch sidebar tab based on anim category
   const isDrawingAnim = typeof _OUTLINE_ANIM_MODES !== 'undefined' && _OUTLINE_ANIM_MODES.has(anim);
-  switchSidebarTab(isDrawingAnim ? 'drawing' : 'animation', false);
+  switchSidebarTab(isDrawingAnim ? 'drawing' : 'animation');
 
   const isSpec    = anim.startsWith('spec-');
   const isChunk   = anim === 'chunkjump';
