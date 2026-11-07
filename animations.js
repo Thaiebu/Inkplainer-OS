@@ -48,6 +48,175 @@ function revealUpToY(absY) {
   ctx.restore();
 }
 
+function _easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+function _easeOutBounce(t) {
+  const n1 = 7.5625, d1 = 2.75;
+  let p = t;
+  if (p < 1 / d1) {
+    return n1 * p * p;
+  } else if (p < 2 / d1) {
+    return n1 * (p -= 1.5 / d1) * p + 0.75;
+  } else if (p < 2.5 / d1) {
+    return n1 * (p -= 2.25 / d1) * p + 0.9375;
+  } else {
+    return n1 * (p -= 2.625 / d1) * p + 0.984375;
+  }
+}
+
+// ─────────────────────────────────────────────
+// ── MOVE IN / FLY IN (PowerPoint / Slide Style)
+// ─────────────────────────────────────────────
+function setupMoveIn() {
+  const slot = state._currentSlot;
+  const layer = (slot && slot.layer) || state.layers[state.activeLayerIndex];
+  
+  const targetX = layer ? layer.x : (state.contentBounds ? state.contentBounds.x : (state.canvasW - 200)/2);
+  const targetY = layer ? layer.y : (state.contentBounds ? state.contentBounds.y : (state.canvasH - 200)/2);
+  const targetW = layer ? layer.w : (state.contentBounds ? state.contentBounds.w : 200);
+  const targetH = layer ? layer.h : (state.contentBounds ? state.contentBounds.h : 200);
+
+  state.moveTargetX = targetX;
+  state.moveTargetY = targetY;
+
+  const dir = (layer && layer.moveDirection) || state.moveDirection || 'left';
+  state.moveDirection = dir;
+
+  let startX = -targetW - 80;
+  let startY = targetY;
+
+  if (dir === 'left') {
+    startX = -targetW - 80;
+    startY = targetY;
+  } else if (dir === 'right') {
+    startX = state.canvasW + 80;
+    startY = targetY;
+  } else if (dir === 'top') {
+    startX = targetX;
+    startY = -targetH - 80;
+  } else if (dir === 'bottom') {
+    startX = targetX;
+    startY = state.canvasH + 80;
+  } else if (dir === 'top-left') {
+    startX = -targetW - 80;
+    startY = -targetH - 80;
+  } else if (dir === 'top-right') {
+    startX = state.canvasW + 80;
+    startY = -targetH - 80;
+  } else if (dir === 'bottom-left') {
+    startX = -targetW - 80;
+    startY = state.canvasH + 80;
+  } else if (dir === 'bottom-right') {
+    startX = state.canvasW + 80;
+    startY = state.canvasH + 80;
+  } else if (dir === 'prev-layer') {
+    let prevLayer = null;
+    if (layer && state.layers) {
+      const idx = state.layers.indexOf(layer);
+      if (idx > 0) {
+        prevLayer = state.layers[idx - 1];
+      }
+    }
+    if (prevLayer) {
+      startX = Math.round(prevLayer.x + (prevLayer.w - targetW) / 2);
+      startY = Math.round(prevLayer.y + (prevLayer.h - targetH) / 2);
+    } else {
+      startX = -targetW - 80;
+      startY = targetY;
+    }
+  }
+
+  state.moveStartX = startX;
+  state.moveStartY = startY;
+  state.curX = startX;
+  state.curY = startY;
+  state.moveCurrentTick = 0;
+  state.moveEasing = (layer && layer.moveEasing) || state.moveEasing || 'ease-out';
+  state.moveHand = (layer && layer.moveHand !== undefined) ? layer.moveHand : (state.moveHand !== false);
+
+  const speedVal = (layer && layer.speed !== undefined) ? layer.speed : (parseInt(document.getElementById('speed-slider')?.value || 40));
+  state.moveTotalTicks = Math.max(16, Math.round(95 - (speedVal / 100) * 75));
+}
+
+function tickMoveIn(speed) {
+  state.moveCurrentTick++;
+  const rawT = Math.min(1.0, state.moveCurrentTick / (state.moveTotalTicks || 40));
+
+  let eased = rawT;
+  if (state.moveEasing === 'bounce') {
+    eased = _easeOutBounce(rawT);
+  } else if (state.moveEasing === 'linear') {
+    eased = rawT;
+  } else {
+    eased = _easeOutCubic(rawT);
+  }
+
+  const curX = Math.round(state.moveStartX + (state.moveTargetX - state.moveStartX) * eased);
+  const curY = Math.round(state.moveStartY + (state.moveTargetY - state.moveStartY) * eased);
+  state.curX = curX;
+  state.curY = curY;
+
+  // Clear scratch slot canvas or redraw background in legacy single-canvas mode
+  if (state._slotMode) {
+    ctx.clearRect(0, 0, state.canvasW, state.canvasH);
+  } else {
+    ctx.save();
+    fillBg(ctx);
+    ctx.restore();
+  }
+
+  const slot = state._currentSlot;
+  const layer = (slot && slot.layer) || state.layers[state.activeLayerIndex];
+
+  if (layer && layer.img) {
+    ctx.save();
+    ctx.globalAlpha = layer.opacity ?? 1;
+    ctx.drawImage(layer.img, curX, curY, layer.w, layer.h);
+    ctx.restore();
+  } else if (offscreen) {
+    ctx.save();
+    const dx = curX - state.moveTargetX;
+    const dy = curY - state.moveTargetY;
+    ctx.drawImage(offscreen, dx, dy);
+    ctx.restore();
+  }
+
+  // Draw pushing hand if enabled
+  if (state.moveHand && rawT < 1.0 && typeof drawHand === 'function') {
+    const handStyle = (layer && layer.hand) || state.hand || 'custom1';
+    if (handStyle !== 'ghost') {
+      const w = layer ? layer.w : 200;
+      const h = layer ? layer.h : 200;
+      let tipX = curX + w * 0.75;
+      let tipY = curY + 20;
+
+      if (state.moveStartX > state.moveTargetX) {
+        tipX = curX + w * 0.25;
+      } else if (state.moveStartY > state.moveTargetY) {
+        tipY = curY + h * 0.75;
+      }
+
+      const glideHolder = slot || state;
+      glideHolder._handGX = tipX;
+      glideHolder._handGY = tipY;
+
+      drawHand(hctx, tipX, tipY, 1, handStyle);
+    }
+  }
+
+  setProgress(rawT);
+
+  if (rawT >= 1.0) {
+    if (state._slotMode) {
+      ctx.clearRect(0, 0, state.canvasW, state.canvasH);
+    }
+    hctx.clearRect(0, 0, state.canvasW, state.canvasH);
+    finishAnim();
+  }
+}
+
 // Reveal everything revealed so far (stored as a bitmask of row bands)
 // For styles that don't do simple top-down reveal, we maintain a
 // separate "revealCanvas" and blit it.
@@ -1792,6 +1961,7 @@ const _SLOT_KEYS = [
   'noFlashFinish','contentBounds','animStyle','hand','zigzag','textAnimDir','textDrawStyle','outlineDetect','outlineAlgorithm','outlineStrokeStyle',
   'stPhase','stOutlineCanvas','stOutlinePts','stOutlineIdx','stOutlineLastDrawn',
   'stFillPts','stOutlineColor','stOutlineThickness',
+  'moveStartX','moveStartY','moveTargetX','moveTargetY','moveCurrentTick','moveTotalTicks','moveEasing','moveDirection','moveHand',
 ];
 
 // Swap slot state → global state (+ swap ctx/offscreen)
@@ -1825,6 +1995,7 @@ function _tickSlot(slot) {
   _push('spec-tile-slider',  slot.layer.specChunks ?? 35);
 
   switch (state.animStyle) {
+    case 'movein':        tickMoveIn(speed);        break;
     case 'contour':       tickContour(speed);       break;
     case 'outlinechunks': tickOutlineChunks(speed); break;
     case 'outlinefill':   tickOutlineFill(speed);   break;
@@ -2114,6 +2285,9 @@ function _runGroupAt(gpos) {
     slot._state.outlineDetect   = layer.outlineDetect   ?? state.outlineDetect   ?? 50;
     slot._state.outlineAlgorithm= layer.outlineAlgorithm|| state.outlineAlgorithm|| 'classic';
     slot._state.outlineStrokeStyle = layer.outlineStrokeStyle || state.outlineStrokeStyle || 'default';
+    slot._state.moveDirection = layer.moveDirection || state.moveDirection || 'left';
+    slot._state.moveEasing    = layer.moveEasing    || state.moveEasing    || 'ease-out';
+    slot._state.moveHand      = layer.moveHand !== undefined ? layer.moveHand : (state.moveHand !== false);
     return slot;
   });
 
@@ -3546,6 +3720,7 @@ function setOutlineOpacity(val) {
     setupScribble,
     setupSpecText,
     setupSpecialized,
+    setupMoveIn,
     
     // Core animation algorithms
     tickScanner,
@@ -3558,6 +3733,7 @@ function setOutlineOpacity(val) {
     tickScribble,
     tickSpecText,
     tickSpecialized,
+    tickMoveIn,
     
     // Helper functions (used by setupStyle and animations)
     buildPresenceMap,

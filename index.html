@@ -3261,6 +3261,304 @@ input[type="number"]:focus { border-color: var(--accent); }
   #slicer-modal { display: none !important; }
 }
 
+/* ═══════════════════════════════════════════
+   MULTI-SLIDE / SCENES MANAGER
+═══════════════════════════════════════════ */
+#slide-bar {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  user-select: none;
+  max-width: 90%;
+}
+.slide-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  overflow-x: auto;
+  min-width: 0;
+  flex: 1;
+}
+.slide-bar-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+#slide-tabs-list {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+.slide-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.14s ease;
+  white-space: nowrap;
+}
+.slide-tab:hover {
+  border-color: var(--border-hi);
+  color: var(--text);
+}
+.slide-tab.active {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.slide-tab-del {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--muted);
+  opacity: 0.6;
+  transition: all 0.12s;
+  margin-left: 2px;
+}
+.slide-tab-del:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  opacity: 1;
+}
+.slide-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  background: transparent;
+  border: 1px dashed var(--border-hi);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted-hi);
+  cursor: pointer;
+  transition: all 0.14s ease;
+  white-space: nowrap;
+}
+.slide-add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+.slide-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+#slide-transition-select {
+  font-size: 11px;
+  padding: 3px 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text);
+  outline: none;
+  font-family: inherit;
+}
+.slide-playall-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+}
+.slide-playall-btn:hover { opacity: 0.9; }
+
+/* ═══════════════════════════════════════════
+   DOODLES & VECTOR ASSETS PANEL
+═══════════════════════════════════════════ */
+.doodle-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 9px;
+  margin-bottom: 8px;
+}
+.doodle-search-wrap svg { color: var(--muted); flex-shrink: 0; }
+.doodle-search-wrap input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 11px;
+  color: var(--text);
+  font-family: inherit;
+}
+.doodle-cat-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.doodle-cat-pill {
+  padding: 3px 8px;
+  font-size: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: inherit;
+}
+.doodle-cat-pill.active, .doodle-cat-pill:hover {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.recent-doodles-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+.clear-recents-btn {
+  background: transparent;
+  border: none;
+  font-size: 9px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+.clear-recents-btn:hover { color: #ef4444; }
+.recent-doodles-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  min-height: 48px;
+}
+.recent-doodle-chip {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 4px;
+  transition: all 0.12s ease;
+  position: relative;
+}
+.recent-doodle-chip:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+}
+.recent-doodle-chip img, .recent-doodle-chip svg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.doodle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  max-height: 290px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.doodle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.13s ease;
+  user-select: none;
+}
+.doodle-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.doodle-card-preview {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  pointer-events: none;
+}
+.doodle-card-preview svg {
+  width: 36px;
+  height: 36px;
+  stroke: var(--text);
+  pointer-events: none;
+}
+.doodle-card-title {
+  font-size: 9.5px;
+  color: var(--muted-hi);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  pointer-events: none;
+}
+.doodle-card:hover .doodle-card-title {
+  color: var(--accent);
+  font-weight: 500;
+}
+
 </style>
 <body>
 
@@ -3472,6 +3770,40 @@ input[type="number"]:focus { border-color: var(--accent); }
           <div class="slider-row">
             <input type="range" id="tile-slider" min="6" max="80" value="30" oninput="updateSliderFill(this);document.getElementById('tile-val').textContent=this.value">
             <span class="slider-val" id="tile-val">30</span>
+          </div>
+        </div>
+
+        <div class="anim-section-divider">Slide & Motion (PowerPoint / VideoScribe)</div>
+        <div class="anim-grid">
+          <div class="anim-opt" data-anim="movein" onclick="selectAnim(this)" style="grid-column: 1 / -1; display:flex; align-items:center; justify-content:center; gap:6px;">
+            <span class="anim-icon">✈️</span> Move / Fly In (Slide Motion)
+          </div>
+        </div>
+
+        <div id="movein-opts" style="display:none;margin-top:8px;padding:8px;background:rgba(0,0,0,0.025);border:1px solid var(--border);border-radius:8px;">
+          <div class="section-sublabel" style="margin-bottom:5px;">Fly From (Direction / Origin)</div>
+          <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:4px;margin-bottom:8px;" id="movein-dir-grid">
+            <div class="anim-opt" data-dir="top-left" onclick="selectMoveDirection(this)" style="font-size:10px;padding:5px 2px;text-align:center;">↖ Top-Left</div>
+            <div class="anim-opt" data-dir="top" onclick="selectMoveDirection(this)" style="font-size:10px;padding:5px 2px;text-align:center;">⬆ Top</div>
+            <div class="anim-opt" data-dir="top-right" onclick="selectMoveDirection(this)" style="font-size:10px;padding:5px 2px;text-align:center;">↗ Top-Right</div>
+            <div class="anim-opt selected" data-dir="left" onclick="selectMoveDirection(this)" style="font-size:10px;padding:5px 2px;text-align:center;">⬅ Left</div>
+            <div class="anim-opt" data-dir="prev-layer" onclick="selectMoveDirection(this)" style="font-size:10px;padding:5px 2px;text-align:center;" title="Fly from previous image position">🔄 Prev Img</div>
+            <div class="anim-opt" data-dir="right" onclick="selectMoveDirection(this)" style="font-size:10px;padding:5px 2px;text-align:center;">➡ Right</div>
+            <div class="anim-opt" data-dir="bottom-left" onclick="selectMoveDirection(this)" style="font-size:10px;padding:5px 2px;text-align:center;">↙ Bot-Left</div>
+            <div class="anim-opt" data-dir="bottom" onclick="selectMoveDirection(this)" style="font-size:10px;padding:5px 2px;text-align:center;">⬇ Bottom</div>
+            <div class="anim-opt" data-dir="bottom-right" onclick="selectMoveDirection(this)" style="font-size:10px;padding:5px 2px;text-align:center;">↘ Bot-Right</div>
+          </div>
+
+          <div class="section-sublabel" style="margin-bottom:5px;">Easing / Physics</div>
+          <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:4px;margin-bottom:8px;" id="movein-easing-grid">
+            <div class="anim-opt selected" data-easing="ease-out" onclick="selectMoveEasing(this)" style="font-size:10px;padding:5px 4px;text-align:center;">Smooth</div>
+            <div class="anim-opt" data-easing="bounce" onclick="selectMoveEasing(this)" style="font-size:10px;padding:5px 4px;text-align:center;">Bounce</div>
+            <div class="anim-opt" data-easing="linear" onclick="selectMoveEasing(this)" style="font-size:10px;padding:5px 4px;text-align:center;">Linear</div>
+          </div>
+
+          <div class="toggle-row" style="margin-top:6px;">
+            <span class="toggle-label" style="font-size:11px;">Hand pushes image</span>
+            <button class="toggle on" id="movein-hand-toggle" onclick="toggleMoveHand()"></button>
           </div>
         </div>
 
@@ -3917,6 +4249,36 @@ input[type="number"]:focus { border-color: var(--accent); }
       </button>
     </div>
 
+    <!-- Slide / Scene Presentation Bar -->
+    <div id="slide-bar">
+      <div class="slide-bar-left">
+        <span class="slide-bar-title">🎬 Scenes:</span>
+        <div id="slide-tabs-list"></div>
+        <button class="slide-add-btn" onclick="addNewSlide()" title="Add a new slide (+)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Slide
+        </button>
+        <button class="slide-add-btn" onclick="duplicateCurrentSlide()" title="Duplicate current slide">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Duplicate
+        </button>
+      </div>
+      <div class="slide-bar-right">
+        <button class="slide-playall-btn" onclick="playAllSlides()" title="Play all slides sequentially with transitions">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Play All
+        </button>
+        <div class="tool-divider" style="height:14px;margin:0 2px;"></div>
+        <span style="font-size:10.5px;color:var(--muted);white-space:nowrap;">Transition:</span>
+        <select id="slide-transition-select" onchange="onSlideTransitionChange(this.value)" title="Transition to next slide">
+          <option value="eraser">🧹 Eraser Hand Wipe</option>
+          <option value="wipe">🌊 Clean Wipe</option>
+          <option value="fade">🌫️ Cross Fade</option>
+          <option value="cut">⚡ Instant Cut</option>
+        </select>
+      </div>
+    </div>
+
     <div id="canvas-wrapper" class="mode-select">
       <canvas id="main-canvas"></canvas>
       <canvas id="select-canvas"></canvas>
@@ -4049,6 +4411,7 @@ input[type="number"]:focus { border-color: var(--accent); }
     <div class="tab-group">
       <button class="tab-btn active" onclick="switchTab('image')">Image</button>
       <button class="tab-btn"        onclick="switchTab('text')">Text</button>
+      <button class="tab-btn"        onclick="switchTab('doodles')">🎨 Doodles</button>
     </div>
 
     <!-- IMAGE PANEL -->
@@ -4194,6 +4557,30 @@ input[type="number"]:focus { border-color: var(--accent); }
         </div>
       </div>
 
+    </div>
+
+    <!-- DOODLES / ASSETS PANEL -->
+    <div id="doodles-panel" style="display:none;margin-top:10px;">
+      <div class="doodle-search-wrap">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="doodle-search-input" placeholder="Search 48+ vector doodles..." oninput="DoodleLibrary.onDoodleSearch(this.value)">
+      </div>
+      <div class="doodle-cat-pills" id="doodle-cat-pills">
+        <button class="doodle-cat-pill active" onclick="DoodleLibrary.filterCategory('all', this)">All</button>
+        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('ideas', this)">💡 Ideas</button>
+        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('people', this)">👥 People</button>
+        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('business', this)">📈 Growth</button>
+        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('tech', this)">💻 Tech</button>
+        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('arrows', this)">🎯 Arrows</button>
+        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('education', this)">📚 Science</button>
+      </div>
+      <div class="recent-doodles-header">
+        <span>⭐ Recently Used Assets</span>
+        <button class="clear-recents-btn" onclick="DoodleLibrary.clearRecentAssets()">Clear</button>
+      </div>
+      <div class="recent-doodles-row" id="recent-doodles-list"></div>
+      <div class="section-label" style="margin-top:12px;margin-bottom:6px;">Vector Doodle Library (Click to insert)</div>
+      <div class="doodle-grid" id="doodle-library-grid"></div>
     </div>
   </div>
 
@@ -4431,6 +4818,9 @@ function saveProject(projectId = currentProjectId) {
           outlineThickness: layer.outlineThickness,
           textAnimDir: layer.textAnimDir,
           textDrawStyle: layer.textDrawStyle,
+          moveDirection: layer.moveDirection,
+          moveEasing: layer.moveEasing,
+          moveHand: layer.moveHand,
           // Text layer properties
           kind: layer.kind,
           textProps: layer.textProps,
@@ -4610,6 +5000,9 @@ function loadProject(projectId) {
                 outlineThickness: layerData.outlineThickness,
                 textAnimDir: layerData.textAnimDir,
                 textDrawStyle: layerData.textDrawStyle,
+                moveDirection: layerData.moveDirection || 'left',
+                moveEasing: layerData.moveEasing || 'ease-out',
+                moveHand: layerData.moveHand !== undefined ? layerData.moveHand : true,
                 // Text layer properties
                 kind: layerData.kind || null,
                 textProps: layerData.textProps || null,
@@ -5011,6 +5404,7 @@ let _undoRestoring = false; // blocks re-entry during async restore
 
 // ── Serialize current state (same format as saveProject's savedState) ────
 function _serializeState() {
+  if (typeof saveCurrentSlide === 'function') saveCurrentSlide();
   return {
     canvasW: state.canvasW,
     canvasH: state.canvasH,
@@ -5026,6 +5420,13 @@ function _serializeState() {
     colorStyle: state.colorStyle,
     selectedLayerId: state.selectedLayerId,
     groups: JSON.parse(JSON.stringify(state.groups || [])),
+    currentSlideIndex: state.currentSlideIndex || 0,
+    slides: (state.slides || []).map(s => ({
+      id: s.id,
+      name: s.name,
+      transition: s.transition || 'eraser',
+      canvasBg: s.canvasBg ? JSON.parse(JSON.stringify(s.canvasBg)) : { type:'solid', val:'white' }
+    })),
     layers: (state.layers || []).map(layer => ({
       id: layer.id,
       name: layer.name,
@@ -5057,6 +5458,9 @@ function _serializeState() {
       textAnimDir: layer.textAnimDir,
       textDrawStyle: layer.textDrawStyle,
       zigzag: layer.zigzag,
+      moveDirection: layer.moveDirection,
+      moveEasing: layer.moveEasing,
+      moveHand: layer.moveHand,
     })),
   };
 }
@@ -5197,6 +5601,9 @@ function _applySnapshot(snap, label) {
           textAnimDir: ld.textAnimDir,
           textDrawStyle: ld.textDrawStyle,
           zigzag: ld.zigzag,
+          moveDirection: ld.moveDirection || 'left',
+          moveEasing: ld.moveEasing || 'ease-out',
+          moveHand: ld.moveHand !== undefined ? ld.moveHand : true,
           _origImg: origImg || undefined,
           _origX: ld.origX, _origY: ld.origY,
           _origW: ld.origW, _origH: ld.origH,
@@ -5670,9 +6077,10 @@ window.addEventListener('load', () => {
 </script>
 
 <!-- ════════════════════════════════════════════════════════════════════════
-     ANIMATION ENGINE (external module)
+     ANIMATION ENGINE & VECTOR DOODLES (external modules)
 ════════════════════════════════════════════════════════════════════════ -->
 <script src="animations.js"></script>
+<script src="doodles.js"></script>
 
 <script>
 // ─── POLYFILL ───
@@ -5692,6 +6100,7 @@ const state = {
   mode:'image',
   canvasBg: { type:'solid', val:'white' },   // {type:'solid'|'gradient'|'custom', val, key?}
   color:'#1a1a1a', hand:'custom1', animStyle:'chunkjump', zigzag:true, textAnimDir:'ltr', textDrawStyle:'reveal', outlineDetect:50, outlineAlgorithm:'classic', colorStyle:'filled',
+  moveDirection:'left', moveEasing:'ease-out', moveHand:true,
   canvasW:1280, canvasH:720,
   playing:false, animFrame:null, done:false,
   // scanner
@@ -5716,6 +6125,17 @@ const state = {
   activeLayerIndex: 0,   // which layer is currently being animated in sequence
   groups: [],            // [{id, name, collapsed, visible, layerIds:[]}]
   _groupIdCounter: 0,
+
+  // ─── MULTI-SLIDE / SCENES ───
+  slides: [
+    { id: 1, name: 'Slide 1', layers: [], canvasBg: { type:'solid', val:'white' }, transition: 'eraser' }
+  ],
+  currentSlideIndex: 0,
+  _slideIdCounter: 1,
+  _isPlayingAllSlides: false,
+  _playingSlideIndex: 0,
+  _isSlideTransitioning: false,
+
   // ─── PRESETS ───
   activePresetId: null,  // id of last applied preset; cleared when any setting is changed manually
   // ─── HAND MOVEMENT STYLE (global user preference, not saved per-project) ───
@@ -5816,14 +6236,16 @@ function fitCanvas() {
   const styles = getComputedStyle(canvasArea);
   const padX = parseFloat(styles.paddingLeft || '0') + parseFloat(styles.paddingRight || '0');
   const padY = parseFloat(styles.paddingTop || '0') + parseFloat(styles.paddingBottom || '0');
-  const safeMargin = 24;
-  const availableW = Math.max(160, canvasArea.clientWidth - padX - safeMargin);
-  const availableH = Math.max(160, canvasArea.clientHeight - padY - safeMargin);
-  const s = Math.min(availableW/state.canvasW, availableH/state.canvasH, 1);
-  const sw=(state.canvasW*s)+'px', sh=(state.canvasH*s)+'px';
-  canvas.style.width=sw; canvas.style.height=sh;
-  handCanvas.style.width=sw; handCanvas.style.height=sh;
-  selectCanvas.style.width=sw; selectCanvas.style.height=sh;
+  const safeMarginX = 32;
+  const safeMarginY = 105; // Clearance for top floating slide-bar & bottom playbar
+  const availableW = Math.max(160, canvasArea.clientWidth - padX - safeMarginX);
+  const availableH = Math.max(160, canvasArea.clientHeight - padY - safeMarginY);
+  const s = Math.min(availableW / state.canvasW, availableH / state.canvasH, 1);
+  const sw = Math.round(state.canvasW * s) + 'px';
+  const sh = Math.round(state.canvasH * s) + 'px';
+  canvas.style.width = sw; canvas.style.height = sh;
+  handCanvas.style.width = sw; handCanvas.style.height = sh;
+  selectCanvas.style.width = sw; selectCanvas.style.height = sh;
 }
 // ─── BACKGROUND GRADIENTS (drawn on canvas) ───
 const BG_GRADIENTS = {
@@ -5909,17 +6331,372 @@ initCanvas(1280,720);
 window.addEventListener('resize', fitCanvas);
 
 // ─────────────────────────────────────────────
+// ── SCENE / MULTI-SLIDE MANAGEMENT & TRANSITIONS
+// ─────────────────────────────────────────────
+function fillBgWith(c, bgSetting) {
+  const bg = bgSetting || { type:'solid', val:'white' };
+  if (bg.type === 'solid') {
+    if (bg.val === 'transparent') { c.clearRect(0,0,state.canvasW,state.canvasH); }
+    else { c.fillStyle = (bg.val === 'white') ? '#ffffff' : bg.val; c.fillRect(0,0,state.canvasW,state.canvasH); }
+  } else if (bg.type === 'gradient' && BG_GRADIENTS[bg.key]) {
+    c.save(); BG_GRADIENTS[bg.key](c); c.restore();
+  } else if (bg.type === 'custom') {
+    c.fillStyle = bg.val; c.fillRect(0,0,state.canvasW,state.canvasH);
+  } else {
+    c.fillStyle = '#ffffff'; c.fillRect(0,0,state.canvasW,state.canvasH);
+  }
+}
+
+function saveCurrentSlide() {
+  if (!state.slides || !state.slides[state.currentSlideIndex]) return;
+  const current = state.slides[state.currentSlideIndex];
+  current.layers = [...state.layers];
+  current.canvasBg = JSON.parse(JSON.stringify(state.canvasBg || { type:'solid', val:'white' }));
+  if (!current.transition) current.transition = 'eraser';
+}
+
+function renderSlideTabs() {
+  const container = document.getElementById('slide-tabs-list');
+  if (!container || !state.slides) return;
+  container.innerHTML = state.slides.map((s, idx) => `
+    <div class="slide-tab ${idx === state.currentSlideIndex ? 'active' : ''}"
+      onclick="loadSlide(${idx})"
+      ondblclick="renameSlidePrompt(${idx}, event)"
+      title="${s.name || ('Slide ' + (idx + 1))} (Click to switch · Double-click to rename)">
+      <span>${s.name || ('Slide ' + (idx + 1))}</span>
+      ${state.slides.length > 1 ? `<span class="slide-tab-del" onclick="deleteSlide(${idx}, event)" title="Delete slide">✕</span>` : ''}
+    </div>
+  `).join('');
+  syncTransitionDropdown();
+}
+
+function syncTransitionDropdown() {
+  const sel = document.getElementById('slide-transition-select');
+  if (!sel || !state.slides || !state.slides[state.currentSlideIndex]) return;
+  sel.value = state.slides[state.currentSlideIndex].transition || 'eraser';
+}
+
+function onSlideTransitionChange(val) {
+  if (!state.slides || !state.slides[state.currentSlideIndex]) return;
+  state.slides[state.currentSlideIndex].transition = val;
+  scheduleAutoSave();
+}
+
+function loadSlide(idx, isPlayback = false) {
+  if (!state.slides || idx < 0 || idx >= state.slides.length) return;
+  if (!isPlayback) {
+    saveCurrentSlide();
+    // Stop any in-progress animation when switching slides in editor
+    if (state.playing) {
+      cancelAnimationFrame(state.animFrame);
+      state.playing = false;
+      updatePlayIcons();
+    }
+    state.done = false;
+    state.bgCanvas = null;
+    const doneBadge = document.getElementById('done-badge');
+    if (doneBadge) doneBadge.classList.remove('show');
+    const playBtn = document.getElementById('play-pause-btn');
+    if (playBtn) playBtn.disabled = false;
+  }
+
+  state.currentSlideIndex = idx;
+  const target = state.slides[idx];
+  state.layers = target.layers ? [...target.layers] : [];
+  state.canvasBg = target.canvasBg ? JSON.parse(JSON.stringify(target.canvasBg)) : { type:'solid', val:'white' };
+  state.selectedLayerId = state.layers.length > 0 ? state.layers[state.layers.length - 1].id : null;
+
+  if (!isPlayback) {
+    fillBg(_mainCtx);
+    redrawLayersOnCanvas();
+    renderLayerList();
+    renderSlideTabs();
+    scheduleAutoSave();
+  }
+}
+
+function addNewSlide() {
+  pushUndoSnapshot();
+  saveCurrentSlide();
+  const newId = ++state._slideIdCounter;
+  const newSlide = {
+    id: newId,
+    name: 'Slide ' + (state.slides.length + 1),
+    layers: [],
+    canvasBg: JSON.parse(JSON.stringify(state.canvasBg || { type:'solid', val:'white' })),
+    transition: 'eraser'
+  };
+  state.slides.push(newSlide);
+  loadSlide(state.slides.length - 1);
+  showToast('New slide created');
+}
+
+function duplicateCurrentSlide() {
+  pushUndoSnapshot();
+  saveCurrentSlide();
+  const cur = state.slides[state.currentSlideIndex];
+  const newId = ++state._slideIdCounter;
+  // Deep clone layers
+  const clonedLayers = (cur.layers || []).map(l => ({ ...l, id: ++_layerIdCounter }));
+  const newSlide = {
+    id: newId,
+    name: (cur.name || 'Slide') + ' (Copy)',
+    layers: clonedLayers,
+    canvasBg: JSON.parse(JSON.stringify(cur.canvasBg || { type:'solid', val:'white' })),
+    transition: cur.transition || 'eraser'
+  };
+  state.slides.splice(state.currentSlideIndex + 1, 0, newSlide);
+  loadSlide(state.currentSlideIndex + 1);
+  showToast('Slide duplicated');
+}
+
+function deleteSlide(idx, event) {
+  if (event) event.stopPropagation();
+  if (!state.slides || state.slides.length <= 1) {
+    showToast('Cannot delete the only slide');
+    return;
+  }
+  pushUndoSnapshot();
+  state.slides.splice(idx, 1);
+  if (state.currentSlideIndex >= state.slides.length) {
+    state.currentSlideIndex = state.slides.length - 1;
+  }
+  loadSlide(state.currentSlideIndex);
+  showToast('Slide deleted');
+}
+
+function renameSlidePrompt(idx, event) {
+  if (event) event.stopPropagation();
+  if (!state.slides || !state.slides[idx]) return;
+  const curName = state.slides[idx].name || ('Slide ' + (idx + 1));
+  const newName = prompt('Enter slide name:', curName);
+  if (newName && newName.trim()) {
+    pushUndoSnapshot();
+    state.slides[idx].name = newName.trim();
+    renderSlideTabs();
+    scheduleAutoSave();
+  }
+}
+
+function playSlideTransition(type, nextSlideBg, onComplete) {
+  state._isSlideTransitioning = true;
+  // Snapshot current canvas state
+  const prevSnap = document.createElement('canvas');
+  prevSnap.width = state.canvasW;
+  prevSnap.height = state.canvasH;
+  prevSnap.getContext('2d').drawImage(canvas, 0, 0);
+
+  if (type === 'cut') {
+    fillBgWith(_mainCtx, nextSlideBg);
+    hctx.clearRect(0, 0, state.canvasW, state.canvasH);
+    state._isSlideTransitioning = false;
+    if (typeof onComplete === 'function') onComplete();
+    return;
+  }
+
+  if (type === 'fade') {
+    const dur = 700;
+    const startTime = performance.now();
+    function tickFade(now) {
+      const el = Math.min(1, (now - startTime) / dur);
+      const t = el < 0.5 ? 2 * el * el : -1 + (4 - 2 * el) * el;
+      _mainCtx.clearRect(0, 0, state.canvasW, state.canvasH);
+      fillBgWith(_mainCtx, nextSlideBg);
+      _mainCtx.save();
+      _mainCtx.globalAlpha = 1 - t;
+      _mainCtx.drawImage(prevSnap, 0, 0);
+      _mainCtx.restore();
+      if (el < 1) {
+        requestAnimationFrame(tickFade);
+      } else {
+        fillBgWith(_mainCtx, nextSlideBg);
+        hctx.clearRect(0, 0, state.canvasW, state.canvasH);
+        state._isSlideTransitioning = false;
+        if (typeof onComplete === 'function') onComplete();
+      }
+    }
+    requestAnimationFrame(tickFade);
+    return;
+  }
+
+  if (type === 'wipe') {
+    const dur = 800;
+    const startTime = performance.now();
+    function tickWipe(now) {
+      const el = Math.min(1, (now - startTime) / dur);
+      const t = el * (2 - el);
+      const splitX = Math.round(t * state.canvasW);
+      _mainCtx.clearRect(0, 0, state.canvasW, state.canvasH);
+      // Previous slide on right
+      _mainCtx.save();
+      _mainCtx.beginPath();
+      _mainCtx.rect(splitX, 0, state.canvasW - splitX, state.canvasH);
+      _mainCtx.clip();
+      _mainCtx.drawImage(prevSnap, 0, 0);
+      _mainCtx.restore();
+      // New slide on left
+      _mainCtx.save();
+      _mainCtx.beginPath();
+      _mainCtx.rect(0, 0, splitX, state.canvasH);
+      _mainCtx.clip();
+      fillBgWith(_mainCtx, nextSlideBg);
+      _mainCtx.fillStyle = 'rgba(0,0,0,0.12)';
+      _mainCtx.fillRect(splitX - 2, 0, 2, state.canvasH);
+      _mainCtx.restore();
+
+      if (el < 1) {
+        requestAnimationFrame(tickWipe);
+      } else {
+        fillBgWith(_mainCtx, nextSlideBg);
+        hctx.clearRect(0, 0, state.canvasW, state.canvasH);
+        state._isSlideTransitioning = false;
+        if (typeof onComplete === 'function') onComplete();
+      }
+    }
+    requestAnimationFrame(tickWipe);
+    return;
+  }
+
+  // DEFAULT / 'eraser': ERASER HAND WIPE
+  // Whiteboard eraser sweeps across the board in 4 zigzag passes,
+  // wiping the board clean with an eraser sponge held by the hand.
+  const dur = 1350;
+  const passes = 4;
+  const startTime = performance.now();
+  const spongeW = 86;
+  const spongeH = 46;
+
+  function tickEraser(now) {
+    const progress = Math.min(1, (now - startTime) / dur);
+    const passProgress = progress * passes;
+    const currentPass = Math.min(passes - 1, Math.floor(passProgress));
+    const passFrac = passProgress - currentPass;
+
+    const bandH = state.canvasH / passes;
+    const yCenter = (currentPass + 0.5) * bandH;
+
+    let xCenter;
+    const margin = 50;
+    if (currentPass % 2 === 0) {
+      xCenter = -margin + passFrac * (state.canvasW + 2 * margin);
+    } else {
+      xCenter = (state.canvasW + margin) - passFrac * (state.canvasW + 2 * margin);
+    }
+
+    // 1. Draw base snapshot
+    _mainCtx.drawImage(prevSnap, 0, 0);
+
+    // 2. Clear all previously completed bands with new background
+    if (currentPass > 0) {
+      _mainCtx.save();
+      _mainCtx.beginPath();
+      _mainCtx.rect(0, 0, state.canvasW, currentPass * bandH);
+      _mainCtx.clip();
+      fillBgWith(_mainCtx, nextSlideBg);
+      _mainCtx.restore();
+    }
+
+    // 3. Clear the current band up to the eraser position
+    _mainCtx.save();
+    _mainCtx.beginPath();
+    if (currentPass % 2 === 0) {
+      _mainCtx.rect(0, currentPass * bandH, Math.max(0, xCenter + spongeW / 2), bandH);
+    } else {
+      _mainCtx.rect(Math.min(state.canvasW, xCenter - spongeW / 2), currentPass * bandH, state.canvasW - (xCenter - spongeW / 2), bandH);
+    }
+    _mainCtx.clip();
+    fillBgWith(_mainCtx, nextSlideBg);
+    _mainCtx.restore();
+
+    // 4. Draw eraser sponge & hand on hctx
+    hctx.clearRect(0, 0, state.canvasW, state.canvasH);
+    hctx.save();
+    hctx.translate(xCenter, yCenter);
+
+    // Felt eraser body (blue plastic handle)
+    hctx.fillStyle = '#2563eb';
+    hctx.beginPath();
+    if (hctx.roundRect) hctx.roundRect(-spongeW / 2, -spongeH / 2, spongeW, spongeH * 0.45, 6);
+    else hctx.rect(-spongeW / 2, -spongeH / 2, spongeW, spongeH * 0.45);
+    hctx.fill();
+
+    // Dark grey dense felt pad
+    hctx.fillStyle = '#334155';
+    hctx.beginPath();
+    if (hctx.roundRect) hctx.roundRect(-spongeW / 2, -spongeH / 2 + spongeH * 0.45, spongeW, spongeH * 0.55, 4);
+    else hctx.rect(-spongeW / 2, -spongeH / 2 + spongeH * 0.45, spongeW, spongeH * 0.55);
+    hctx.fill();
+
+    // Chalk dust accent line on felt
+    hctx.fillStyle = 'rgba(255,255,255,0.22)';
+    hctx.fillRect(-spongeW / 2 + 10, -spongeH / 2 + spongeH * 0.65, spongeW - 20, 4);
+
+    hctx.restore();
+
+    // Draw hand holding the eraser sponge
+    if (typeof drawHand === 'function') {
+      drawHand(hctx, xCenter + 15, yCenter - 15, 1, state.hand || 'custom1');
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(tickEraser);
+    } else {
+      fillBgWith(_mainCtx, nextSlideBg);
+      hctx.clearRect(0, 0, state.canvasW, state.canvasH);
+      state._isSlideTransitioning = false;
+      if (typeof onComplete === 'function') onComplete();
+    }
+  }
+
+  requestAnimationFrame(tickEraser);
+}
+
+function playAllSlides() {
+  if (!state.slides || !state.slides.length) return;
+  saveCurrentSlide();
+  state._isPlayingAllSlides = true;
+  state._playingSlideIndex = 0;
+  loadSlide(0, true /* isPlayback */);
+  resetAnim();
+  generate();
+}
+
+// ─────────────────────────────────────────────
 // ── LAYER MANAGEMENT
 // ─────────────────────────────────────────────
 let _layerIdCounter = 0;
 
 function addLayer(img, name, posX, posY) {
+  // If an animation had completed or was running, clean up animation state so the canvas is in clean editing mode
+  if (state.playing || state.done || state.bgCanvas) {
+    cancelAnimationFrame(state.animFrame);
+    state.playing = false;
+    state.done = false;
+    state.bgCanvas = null;
+    state._activeSlots = [];
+    state._currentSlot = null;
+    state._slotMode = false;
+    ctx = _mainCtx;
+    const doneBadge = document.getElementById('done-badge');
+    if (doneBadge) doneBadge.classList.remove('show');
+    const playBtn = document.getElementById('play-pause-btn');
+    if (playBtn) playBtn.disabled = false;
+    updatePlayIcons();
+    const ov = document.getElementById('outline-overlay');
+    if (ov) { ov.style.display = 'none'; const oc = ov.getContext('2d'); if (oc) oc.clearRect(0, 0, ov.width, ov.height); }
+    hctx.clearRect(0, 0, state.canvasW, state.canvasH);
+    setProgress(0);
+  }
+
   pushUndoSnapshot();
   const id = ++_layerIdCounter;
   // Default size: fit within canvas keeping aspect ratio, at 80% of canvas
-  const scale = Math.min(state.canvasW / img.width, state.canvasH / img.height) * 0.8;
-  const w = Math.round(img.width * scale);
-  const h = Math.round(img.height * scale);
+  const naturalW = img.naturalWidth || img.width || 256;
+  const naturalH = img.naturalHeight || img.height || 256;
+  const rawScale = Math.min(state.canvasW / naturalW, state.canvasH / naturalH) * 0.8;
+  const scale = (Number.isFinite(rawScale) && rawScale > 0) ? rawScale : 0.5;
+  const w = Math.max(20, Math.round(naturalW * scale));
+  const h = Math.max(20, Math.round(naturalH * scale));
   // Stagger position slightly for each layer
   const offset = (state.layers.length % 5) * 20;
   const x = (posX !== undefined && posX !== null) ? Math.round(posX) : Math.round((state.canvasW - w) / 2) + offset;
@@ -5927,12 +6704,17 @@ function addLayer(img, name, posX, posY) {
 
   // Detect alpha
   let hasPngAlpha = false;
-  const probe = document.createElement('canvas');
-  const sw2 = Math.min(img.width,400), sh2 = Math.min(img.height,400);
-  probe.width=sw2; probe.height=sh2;
-  const pc=probe.getContext('2d'); pc.drawImage(img,0,0,img.width,img.height,0,0,sw2,sh2);
-  const d=pc.getImageData(0,0,sw2,sh2).data;
-  for (let i=3;i<d.length;i+=4) { if(d[i]<250){hasPngAlpha=true;break;} }
+  try {
+    const probe = document.createElement('canvas');
+    const sw2 = Math.max(1, Math.min(naturalW, 400)), sh2 = Math.max(1, Math.min(naturalH, 400));
+    probe.width = sw2; probe.height = sh2;
+    const pc = probe.getContext('2d');
+    pc.drawImage(img, 0, 0, naturalW, naturalH, 0, 0, sw2, sh2);
+    const d = pc.getImageData(0, 0, sw2, sh2).data;
+    for (let i = 3; i < d.length; i += 4) { if (d[i] < 250) { hasPngAlpha = true; break; } }
+  } catch (e) {
+    hasPngAlpha = true;
+  }
 
   const layer = { id, name: name||`Layer ${id}`, img, x, y, w, h,
     baseW: w,
@@ -5948,8 +6730,17 @@ function addLayer(img, name, posX, posY) {
     handSpeed: 6,
     chunks: 30,
     specChunks: 35,
-    hasPngAlpha };
+    hasPngAlpha,
+    moveDirection: state.moveDirection || 'left',
+    moveEasing: state.moveEasing || 'ease-out',
+    moveHand: state.moveHand !== false,
+  };
   state.layers.push(layer);
+
+  // Save to recent assets if DoodleLibrary is available
+  if (window.DoodleLibrary && img && img.src && !img.src.startsWith('blob:') && img.src.length < 500000) {
+    window.DoodleLibrary.saveRecentAsset({ id: 'img_' + id, name: name || `Layer ${id}`, src: img.src });
+  }
   
   // Ensure canvas is properly fitted after adding layer
   // This fixes the "zoomed in" bug on first image
@@ -6027,6 +6818,7 @@ function syncSidebarToLayer(id) {
   const isSpec        = anim.startsWith('spec-');
   const isOutline     = anim === 'illustfill' || anim === 'outlinefill';
   const isOutlineOnly = anim === 'outlineonly';
+  const isMoveIn      = anim === 'movein';
   document.getElementById('scanner-opts').style.display         = isScanner     ? 'block' : 'none';
   document.getElementById('tile-opts').style.display            = isChunk       ? 'block' : 'none';
   document.getElementById('spec-tile-opts').style.display       = isSpec        ? 'block' : 'none';
@@ -6035,6 +6827,9 @@ function syncSidebarToLayer(id) {
   document.getElementById('card-outlineonlyopts').style.display = isOutlineOnly ? 'block' : 'none';
   const isDetectMode = isOutline || isOutlineOnly || anim === 'spec-text';
   document.getElementById('outline-detect-opts').style.display  = isDetectMode  ? 'block' : 'none';
+  const el_movein = document.getElementById('movein-opts');
+  if (el_movein) el_movein.style.display = isMoveIn ? 'block' : 'none';
+  if (isMoveIn) syncMoveInOpts(layer);
 
   // Sync sliders (panels above are already in their final visible/hidden state now)
   const setSlider = (id, valId, val) => {
@@ -6225,6 +7020,9 @@ function _runGroupAt(gpos) {
     slot._state.outlineDetect   = layer.outlineDetect   ?? state.outlineDetect   ?? 50;
     slot._state.outlineAlgorithm= layer.outlineAlgorithm|| state.outlineAlgorithm|| 'classic';
     slot._state.outlineStrokeStyle = layer.outlineStrokeStyle || state.outlineStrokeStyle || 'default';
+    slot._state.moveDirection = layer.moveDirection || state.moveDirection || 'left';
+    slot._state.moveEasing    = layer.moveEasing    || state.moveEasing    || 'ease-out';
+    slot._state.moveHand      = layer.moveHand !== undefined ? layer.moveHand : (state.moveHand !== false);
     return slot;
   });
 
@@ -6337,13 +7135,43 @@ function _allLayersDone() {
     hctx.clearRect(0, 0, state.canvasW, state.canvasH);
   }
 
-  if (!shouldReveal) {
-    _snap();
+  function _finishAll() {
+    if (state._isPlayingAllSlides && state._playingSlideIndex < state.slides.length - 1) {
+      const curSlide = state.slides[state._playingSlideIndex];
+      const nextIdx = state._playingSlideIndex + 1;
+      const nextSlide = state.slides[nextIdx];
+      const transType = curSlide ? (curSlide.transition || 'eraser') : 'eraser';
+      const nextBg = nextSlide ? (nextSlide.canvasBg || { type:'solid', val:'white' }) : { type:'solid', val:'white' };
+
+      playSlideTransition(transType, nextBg, () => {
+        state._playingSlideIndex = nextIdx;
+        loadSlide(nextIdx, true /* isPlayback */);
+        renderSlideTabs();
+        if (state.layers.length > 0) {
+          state.done = false;
+          state.playing = true;
+          updatePlayIcons();
+          generate();
+        } else {
+          _finishAll();
+        }
+      });
+      return;
+    }
+
+    state._isPlayingAllSlides = false;
     document.getElementById('play-pause-btn').disabled = true;
     document.getElementById('done-badge').classList.add('show');
     document.getElementById('anim-style-label').textContent = '';
     state.done = true;
+    state.playing = false;
+    updatePlayIcons();
     hideTopbarBuffer();
+  }
+
+  if (!shouldReveal) {
+    _snap();
+    _finishAll();
     return;
   }
 
@@ -6356,11 +7184,7 @@ function _allLayersDone() {
     const el = (Date.now() - start) / dur;
     if (el >= 1) {
       _snap();
-      document.getElementById('play-pause-btn').disabled = true;
-      document.getElementById('done-badge').classList.add('show');
-      document.getElementById('anim-style-label').textContent = '';
-      state.done = true;
-      hideTopbarBuffer();
+      _finishAll();
       return;
     }
     const t = ease(el);
@@ -7005,14 +7829,22 @@ document.addEventListener('mouseup', () => {
 // ─── UI HANDLERS ───
 function switchTab(m) {
   state.mode = m;
-  document.getElementById('image-panel').style.display = m==='image'?'block':'none';
-  document.getElementById('text-panel').style.display  = m==='text' ?'block':'none';
+  const imgPanel = document.getElementById('image-panel');
+  const txtPanel = document.getElementById('text-panel');
+  const ddlPanel = document.getElementById('doodles-panel');
+  if (imgPanel) imgPanel.style.display = m==='image'?'block':'none';
+  if (txtPanel) txtPanel.style.display  = m==='text' ?'block':'none';
+  if (ddlPanel) ddlPanel.style.display = m==='doodles'?'block':'none';
   document.querySelectorAll('.tab-btn').forEach((b,i)=>
-    b.classList.toggle('active',(i===0&&m==='image')||(i===1&&m==='text')));
+    b.classList.toggle('active',(i===0&&m==='image')||(i===1&&m==='text')||(i===2&&m==='doodles')));
   // Cancel text placement/editing when switching away from text tab
   if (m !== 'text') {
     deactivateTextPlacement();
     closeTextEditor(true);
+  }
+  if (m === 'doodles' && window.DoodleLibrary) {
+    window.DoodleLibrary.renderDoodleGrid();
+    window.DoodleLibrary.renderRecentAssets();
   }
 }
 function selectColor(el) {
@@ -7033,6 +7865,7 @@ function selectHand(el) {
 }
 
 const SPEC_INFO = {
+  'movein':       { title:'Move / Fly In — Presentation Motion', desc:'Glides the layer into position from outside the canvas or from the previous image, with optional hand-pushing and bounce physics.' },
   'spec-text':    { title:'Text — Character by character',    desc:'Detects each letter or word cluster and draws them in sequence. Control the draw direction in Text Draw Options.' },
   'spec-human':    { title:'Human — Top-down anatomy',      desc:'Head first, then shoulders, torso, arms, and legs.' },
   'spec-animal':   { title:'Animal — Head to tail',         desc:'Starts at the left (head) and flows right toward the tail.' },
@@ -7305,6 +8138,10 @@ function applyPreset(settings, presetId) {
   if (el_outlineopts) el_outlineopts.style.display = (s.animStyle === 'outlineonly') ? 'block' : 'none';
   if (el_textopts)   el_textopts.style.display   = (s.animStyle === 'spec-text') ? 'block' : 'none';
   if (el_outlinedet) el_outlinedet.style.display = isDrawingAnim ? 'block' : 'none';
+  const isMoveIn        = s.animStyle === 'movein';
+  const el_movein       = document.getElementById('movein-opts');
+  if (el_movein)     el_movein.style.display     = isMoveIn ? 'block' : 'none';
+  if (isMoveIn) syncMoveInOpts(layer);
   switchSidebarTab(isDrawingAnim ? 'drawing' : 'animation');
 
   // ── hand ──
@@ -7980,6 +8817,7 @@ function selectAnim(el) {
   const isScribble= anim === 'scribble';
   const isScanner = anim === 'scanner';
   const isOutlineChunks = anim === 'outlinechunks';
+  const isMoveIn  = anim === 'movein';
 
   document.getElementById('scanner-opts').style.display   = isScanner                            ? 'block' : 'none';
   document.getElementById('tile-opts').style.display      = (isChunk||isScribble||isOutlineChunks) ? 'block' : 'none';
@@ -7989,6 +8827,9 @@ function selectAnim(el) {
   document.getElementById('card-outlineonlyopts').style.display= (anim==='outlineonly') ? 'block' : 'none';
   document.getElementById('card-textopts').style.display        = (anim==='spec-text')  ? 'block' : 'none';
   document.getElementById('outline-detect-opts').style.display  = _OUTLINE_ANIM_MODES.has(anim) ? 'block' : 'none';
+  const el_movein = document.getElementById('movein-opts');
+  if (el_movein) el_movein.style.display = isMoveIn ? 'block' : 'none';
+  if (isMoveIn) syncMoveInOpts(layer);
   // Sync detection slider value to selected layer (or global)
   if (_OUTLINE_ANIM_MODES.has(anim)) {
     const layer3 = getSelectedLayer();
@@ -8026,6 +8867,56 @@ function selectAnim(el) {
     ? _animIcon.textContent + ' ' + el.textContent.replace(_animIcon.textContent, '').trim()
     : el.textContent.trim();
   scheduleAutoSave();
+}
+
+function selectMoveDirection(el) {
+  pushUndoSnapshot();
+  const dir = el.dataset.dir;
+  state.moveDirection = dir;
+  const layer = getSelectedLayer();
+  if (layer) layer.moveDirection = dir;
+  document.querySelectorAll('#movein-dir-grid .anim-opt').forEach(opt => {
+    opt.classList.toggle('selected', opt.dataset.dir === dir);
+  });
+  scheduleAutoSave();
+}
+
+function selectMoveEasing(el) {
+  pushUndoSnapshot();
+  const easing = el.dataset.easing;
+  state.moveEasing = easing;
+  const layer = getSelectedLayer();
+  if (layer) layer.moveEasing = easing;
+  document.querySelectorAll('#movein-easing-grid .anim-opt').forEach(opt => {
+    opt.classList.toggle('selected', opt.dataset.easing === easing);
+  });
+  scheduleAutoSave();
+}
+
+function toggleMoveHand() {
+  pushUndoSnapshot();
+  const btn = document.getElementById('movein-hand-toggle');
+  const isChecked = !btn.classList.contains('on');
+  btn.classList.toggle('on', isChecked);
+  state.moveHand = isChecked;
+  const layer = getSelectedLayer();
+  if (layer) layer.moveHand = isChecked;
+  scheduleAutoSave();
+}
+
+function syncMoveInOpts(layer) {
+  const dir = (layer && layer.moveDirection) || state.moveDirection || 'left';
+  const easing = (layer && layer.moveEasing) || state.moveEasing || 'ease-out';
+  const withHand = (layer && layer.moveHand !== undefined) ? layer.moveHand : (state.moveHand !== false);
+
+  document.querySelectorAll('#movein-dir-grid .anim-opt').forEach(opt => {
+    opt.classList.toggle('selected', opt.dataset.dir === dir);
+  });
+  document.querySelectorAll('#movein-easing-grid .anim-opt').forEach(opt => {
+    opt.classList.toggle('selected', opt.dataset.easing === easing);
+  });
+  const handBtn = document.getElementById('movein-hand-toggle');
+  if (handBtn) handBtn.classList.toggle('on', withHand);
 }
 function selectBgPreset(el, type, val) {
   // Skip snapshot when called internally from _applySnapshot restore
@@ -8739,6 +9630,9 @@ function _commitTextLayer(text) {
       chunks:     _oldLayer ? _oldLayer.chunks     : 30,
       specChunks: _oldLayer ? _oldLayer.specChunks : 35,
       hasPngAlpha: true,
+      moveDirection: _oldLayer ? _oldLayer.moveDirection : (state.moveDirection || 'left'),
+      moveEasing:    _oldLayer ? _oldLayer.moveEasing    : (state.moveEasing || 'ease-out'),
+      moveHand:      _oldLayer ? (_oldLayer.moveHand !== undefined ? _oldLayer.moveHand : true) : (state.moveHand !== false),
       // Text metadata for re-editing
       kind:            'text',
       _textContent:    text,
@@ -8910,6 +9804,7 @@ function _flattenOffscreenColors(canvas, maxColors) {
 // Calls the appropriate setup function from AnimationEngine based on current style
 function setupStyle() {
   switch(state.animStyle) {
+    case 'movein':          AnimationEngine.setupMoveIn();                   break;
     case 'contour':         AnimationEngine.setupContour();                  break;
     case 'outlinechunks':   AnimationEngine.setupOutlineChunks();            break;
     case 'outlinefill':     AnimationEngine.setupOutlineFill();              break;
@@ -8982,6 +9877,7 @@ function animate() {
   if (!offscreen) return;
   const speed = _cachedElements.speedSlider ? parseInt(_cachedElements.speedSlider.value) : 40;
   switch(state.animStyle) {
+    case 'movein':         AnimationEngine.tickMoveIn(speed);       break;
     case 'contour':        AnimationEngine.tickContour(speed);      break;
     case 'outlinefill':    AnimationEngine.tickOutlineFill(speed);  break;
     case 'illustfill':     AnimationEngine.tickIllustFill(speed);   break;
@@ -9032,12 +9928,17 @@ function resetAnim() {
   state.scribblePhase=0;
   state.contourPhase=1;
   state.noFlashFinish=false;
+  state.moveCurrentTick=0;
   updatePlayIcons();
   // Only wipe the canvas if we're not mid-sequence (bgCanvas present means layers already drawn)
   if (!state.bgCanvas) fillBg(ctx);
   hctx.clearRect(0,0,state.canvasW,state.canvasH);
   sctx.clearRect(0,0,state.canvasW,state.canvasH);
   setProgress(0);
+  const doneBadge = document.getElementById('done-badge');
+  if (doneBadge) doneBadge.classList.remove('show');
+  const playBtn = document.getElementById('play-pause-btn');
+  if (playBtn) playBtn.disabled = false;
   const ov = document.getElementById('outline-overlay');
   if (ov) { ov.style.display='none'; ov.style.opacity=1; }
 }
@@ -9809,6 +10710,10 @@ function recordMP4(progressText, progressBar) {
 }
 
 function isExportAnimationComplete() {
+  if (state._isPlayingAllSlides) {
+    if (state._playingSlideIndex < state.slides.length - 1) return false;
+    return !!state.done && !state.playing;
+  }
   if (!state.done) return false;
   const groups = state._animGroups;
   if (!groups || !groups.length) return !!state.done;
@@ -9817,6 +10722,11 @@ function isExportAnimationComplete() {
 }
 
 function getExportAnimationProgress() {
+  if (state._isPlayingAllSlides && state.slides && state.slides.length > 1) {
+    const totalSlides = state.slides.length;
+    const currentSlideFraction = state.done ? 1 : Math.max(0, Math.min(1, state._animProgress || 0));
+    return Math.max(0, Math.min(1, (state._playingSlideIndex + currentSlideFraction) / totalSlides));
+  }
   const groups = state._animGroups;
   if (!groups || !groups.length) return state.done ? 1 : 0;
   if (isExportAnimationComplete()) return 1;
@@ -11226,6 +12136,24 @@ function obEnd() {
     setTimeout(() => {
       document.getElementById('welcome-modal').classList.remove('hidden');
     }, 600);
+  }
+})();
+
+// Initialize Slide System & Doodles Library
+(function initSlideAndDoodleSystem() {
+  if (typeof renderSlideTabs === 'function') {
+    renderSlideTabs();
+  }
+  if (window.DoodleLibrary) {
+    if (typeof window.DoodleLibrary.renderDoodleGrid === 'function') {
+      window.DoodleLibrary.renderDoodleGrid();
+    }
+    if (typeof window.DoodleLibrary.renderRecentAssets === 'function') {
+      window.DoodleLibrary.renderRecentAssets();
+    }
+  }
+  if (typeof fitCanvas === 'function') {
+    fitCanvas();
   }
 })();
 </script>
