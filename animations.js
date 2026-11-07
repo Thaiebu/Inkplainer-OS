@@ -2055,7 +2055,8 @@ function _tickAllSlots() {
       aboveBaked.forEach(layer => {
         _mainCtx.save();
         _mainCtx.globalAlpha = layer.opacity ?? 1;
-        _mainCtx.drawImage(layer.img, layer.x, layer.y, layer.w, layer.h);
+        const imgToDraw = (layer.img && (layer.img.complete || layer.img.naturalWidth > 0)) ? layer.img : (layer._canvas || layer.img);
+        if (imgToDraw) _mainCtx.drawImage(imgToDraw, layer.x, layer.y, layer.w, layer.h);
         _mainCtx.restore();
       });
     }
@@ -2100,7 +2101,8 @@ function _tickAllSlots() {
     aboveBaked.forEach(layer => {
       _mainCtx.save();
       _mainCtx.globalAlpha = layer.opacity ?? 1;
-      _mainCtx.drawImage(layer.img, layer.x, layer.y, layer.w, layer.h);
+      const imgToDraw = (layer.img && (layer.img.complete || layer.img.naturalWidth > 0)) ? layer.img : (layer._canvas || layer.img);
+      if (imgToDraw) _mainCtx.drawImage(imgToDraw, layer.x, layer.y, layer.w, layer.h);
       _mainCtx.restore();
     });
   }
@@ -2189,10 +2191,18 @@ function _buildGroupBgCanvas(gpos) {
   return bg;
 }
 
+function _getValidOrder(layer) {
+  if (!layer) return null;
+  const o = layer.animOrder;
+  if (o === null || o === undefined || o === '' || o === false) return null;
+  const n = parseInt(o, 10);
+  return (!isNaN(n) && n > 0) ? n : null;
+}
+
 function getAnimOrder() {
-  const visible    = state.layers.filter(l => l.visible !== false);
-  const ordered    = visible.filter(l=>l.animOrder!==null).sort((a,b)=>a.animOrder-b.animOrder);
-  const unordered  = visible.filter(l=>l.animOrder===null);
+  const visible    = (state.layers || []).filter(l => l && l.visible !== false);
+  const ordered    = visible.filter(l => _getValidOrder(l) !== null).sort((a, b) => _getValidOrder(a) - _getValidOrder(b));
+  const unordered  = visible.filter(l => _getValidOrder(l) === null);
   return [...ordered, ...unordered];
 }
 
@@ -2207,6 +2217,14 @@ function generate() {
   state._animProgress  = 0;
   ctx = _mainCtx;
 
+  // Clear stale outline overlay if present
+  const ov = document.getElementById('outline-overlay');
+  if (ov) {
+    ov.style.display = 'none';
+    const oc = ov.getContext('2d');
+    if (oc) oc.clearRect(0, 0, ov.width, ov.height);
+  }
+
   // Build ordered list then group by animOrder (same number → run simultaneously)
   const allOrdered = getAnimOrder();
   state._animQueue = allOrdered; // flat list (backward compat)
@@ -2214,7 +2232,9 @@ function generate() {
 
   const groupMap = new Map();
   allOrdered.forEach(layer => {
-    const key = layer.animOrder ?? `__${layer.id}`;
+    const ord = _getValidOrder(layer);
+    // Unordered layers get unique individual keys so they NEVER animate in parallel
+    const key = ord !== null ? `order_${ord}` : `layer_${layer.id}`;
     if (!groupMap.has(key)) groupMap.set(key, []);
     groupMap.get(key).push(layer);
   });

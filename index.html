@@ -3728,11 +3728,11 @@ input[type="number"]:focus { border-color: var(--accent); }
   <!-- ── Sticky Tab Switcher ── -->
   <div class="sidebar-tabs">
     <div class="sidebar-tab-row">
-      <button class="sidebar-tab-btn active" id="stab-animation" onclick="switchSidebarTab('animation')">
+      <button class="sidebar-tab-btn active" id="stab-animation" onclick="switchSidebarTab('animation', true)">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="5,3 19,12 5,21"/></svg>
         Animation
       </button>
-      <button class="sidebar-tab-btn" id="stab-drawing" onclick="switchSidebarTab('drawing')">
+      <button class="sidebar-tab-btn" id="stab-drawing" onclick="switchSidebarTab('drawing', true)">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
         Drawing
       </button>
@@ -4722,6 +4722,9 @@ input[type="number"]:focus { border-color: var(--accent); }
 </div>
 
 <script>
+window._OUTLINE_ANIM_MODES = new Set(['outlinefill', 'illustfill', 'outlineonly', 'spec-text']);
+const _OUTLINE_ANIM_MODES = window._OUTLINE_ANIM_MODES;
+
 // ═══════════════════════════════════════════
 // INDEXEDDB PROJECT SYSTEM
 // ═══════════════════════════════════════════
@@ -5614,7 +5617,6 @@ function _applySnapshot(snap, label) {
 
         if (loaded === total) {
           state.layers = restoredLayers.filter(Boolean);
-          state.layers.sort((a, b) => a.animOrder - b.animOrder);
           state.selectedLayerId = snap.selectedLayerId || (state.layers[0]?.id ?? null);
           renderLayerList();
           redrawLayersOnCanvas();
@@ -6892,10 +6894,18 @@ function _buildGroupBgCanvas(gpos) {
   return bg;
 }
 
+function _getValidOrder(layer) {
+  if (!layer) return null;
+  const o = layer.animOrder;
+  if (o === null || o === undefined || o === '' || o === false) return null;
+  const n = parseInt(o, 10);
+  return (!isNaN(n) && n > 0) ? n : null;
+}
+
 function getAnimOrder() {
-  const visible    = state.layers.filter(l => l.visible !== false);
-  const ordered    = visible.filter(l=>l.animOrder!==null).sort((a,b)=>a.animOrder-b.animOrder);
-  const unordered  = visible.filter(l=>l.animOrder===null);
+  const visible    = (state.layers || []).filter(l => l && l.visible !== false);
+  const ordered    = visible.filter(l => _getValidOrder(l) !== null).sort((a, b) => _getValidOrder(a) - _getValidOrder(b));
+  const unordered  = visible.filter(l => _getValidOrder(l) === null);
   return [...ordered, ...unordered];
 }
 
@@ -6941,6 +6951,14 @@ function _generateNow() {
   state._handGY = null;
   ctx = _mainCtx;
 
+  // Clear any stale outline-overlay from previous runs
+  const ov = document.getElementById('outline-overlay');
+  if (ov) {
+    ov.style.display = 'none';
+    const oc = ov.getContext('2d');
+    if (oc) oc.clearRect(0, 0, ov.width, ov.height);
+  }
+
   // Build ordered list then group by animOrder (same number → run simultaneously)
   const allOrdered = getAnimOrder();
   state._animQueue = allOrdered; // flat list (backward compat)
@@ -6948,7 +6966,9 @@ function _generateNow() {
 
   const groupMap = new Map();
   allOrdered.forEach(layer => {
-    const key = layer.animOrder ?? `__${layer.id}`;
+    const ord = _getValidOrder(layer);
+    // Unordered layers get unique individual keys so they NEVER animate in parallel
+    const key = ord !== null ? `order_${ord}` : `layer_${layer.id}`;
     if (!groupMap.has(key)) groupMap.set(key, []);
     groupMap.get(key).push(layer);
   });
@@ -7012,7 +7032,7 @@ function _runGroupAt(gpos) {
     // Seed slot state from current globals, then apply layer overrides
     const _SLOT_KEYS = AnimationEngine._SLOT_KEYS || [];
     _SLOT_KEYS.forEach(k => slot._state[k] = state[k]);
-    slot._state.animStyle   = layer.animStyle;  // always set — inherited from state at addLayer time
+    slot._state.animStyle   = layer.animStyle || state.animStyle || 'scanner';
     slot._state.hand        = layer.hand      || state.hand;
     slot._state.zigzag      = layer.zigzag    ?? state.zigzag;
     slot._state.textAnimDir  = layer.textAnimDir  || state.textAnimDir  || 'ltr';
@@ -7380,8 +7400,8 @@ function setLayerPos(id, prop, val) {
 function setLayerOrder(id, val) {
   pushUndoSnapshot();
   const l = getLayerById(id); if(!l) return;
-  const n = parseInt(val);
-  l.animOrder = (val === '' || isNaN(n)) ? null : Math.max(1, n);
+  const n = parseInt(val, 10);
+  l.animOrder = (val === '' || isNaN(n) || n <= 0) ? null : n;
   // Don't re-render list to avoid losing input focus
 }
 function setLayerOpacity(id, val) {
@@ -7606,7 +7626,11 @@ function redrawLayersOnCanvas() {
       ctx.imageSmoothingEnabled = false;
     }
     
-    ctx.drawImage(layer.img, layer.x, layer.y, layer.w, layer.h);
+    if (layer.img && (layer.img.complete || layer.img.naturalWidth > 0)) {
+      ctx.drawImage(layer.img, layer.x, layer.y, layer.w, layer.h);
+    } else if (layer._canvas) {
+      ctx.drawImage(layer._canvas, layer.x, layer.y, layer.w, layer.h);
+    }
     ctx.restore();
   });
   
@@ -7903,13 +7927,36 @@ function syncDetectAlgButtons(alg) {
 }
 
 // ── Sidebar tab switcher ──────────────────────────────────────────────────────
-function switchSidebarTab(tab) {
+function switchSidebarTab(tab, userInitiated = false) {
   document.querySelectorAll('.sidebar-tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.sidebar-tab-pane').forEach(p => p.classList.remove('active'));
   const btn = document.getElementById('stab-' + tab);
   const pane = document.getElementById('sidebar-pane-' + tab);
   if (btn) btn.classList.add('active');
   if (pane) pane.classList.add('active');
+
+  if (userInitiated) {
+    let layer = getSelectedLayer();
+    if (!layer && state.layers && state.layers.length > 0) {
+      const fallbackId = state.selectedLayerId || state.layers[state.layers.length - 1].id;
+      selectLayer(fallbackId);
+      layer = getSelectedLayer();
+    }
+    const currentStyle = (layer && layer.animStyle) || state.animStyle;
+    const isCurrentDrawing = typeof _OUTLINE_ANIM_MODES !== 'undefined' && _OUTLINE_ANIM_MODES.has(currentStyle);
+
+    if (tab === 'drawing' && !isCurrentDrawing) {
+      const drawingOpt = document.querySelector('#sidebar-pane-drawing .anim-opt.selected') ||
+                         document.querySelector('#sidebar-pane-drawing .anim-opt[data-anim="illustfill"]') ||
+                         document.querySelector('#sidebar-pane-drawing .anim-opt');
+      if (drawingOpt) selectAnim(drawingOpt);
+    } else if (tab === 'animation' && isCurrentDrawing) {
+      const animOpt = document.querySelector('#sidebar-pane-animation .anim-opt.selected') ||
+                      document.querySelector('#sidebar-pane-animation .anim-opt[data-anim="chunkjump"]') ||
+                      document.querySelector('#sidebar-pane-animation .anim-opt');
+      if (animOpt) selectAnim(animOpt);
+    }
+  }
 }
 
 function selectDetectAlg(el) {
@@ -8796,7 +8843,7 @@ function _fillGapsCanvas(src) {
   return fc;
 }
 
-const _OUTLINE_ANIM_MODES = new Set(['outlinefill','illustfill','outlineonly','spec-text']);
+const _OUTLINE_ANIM_MODES = window._OUTLINE_ANIM_MODES || new Set(['outlinefill','illustfill','outlineonly','spec-text']);
 
 function selectAnim(el) {
   pushUndoSnapshot();
@@ -8804,13 +8851,34 @@ function selectAnim(el) {
   document.querySelectorAll('.anim-opt').forEach(a => a.classList.remove('selected'));
   el.classList.add('selected');
   const anim = el.dataset.anim;
-  const layer = getSelectedLayer();
-  state.animStyle = anim;
-  if (layer) { layer.animStyle = anim; }
 
-  // Auto-switch sidebar tab based on anim category
-  const isDrawingAnim = _OUTLINE_ANIM_MODES.has(anim);
-  switchSidebarTab(isDrawingAnim ? 'drawing' : 'animation');
+  // Make sure an active layer is selected if layers exist
+  let layer = getSelectedLayer();
+  if (!layer && state.layers && state.layers.length > 0) {
+    const fallbackId = state.selectedLayerId || state.layers[state.layers.length - 1].id;
+    selectLayer(fallbackId);
+    layer = getSelectedLayer();
+  }
+
+  state.animStyle = anim;
+  if (layer) {
+    layer.animStyle = anim;
+  }
+
+  // Invalidate stale caches so generation cleanly builds fresh outlines and waypoints
+  state.revealCanvas = null;
+  state.edgeCanvas = null;
+  state.ofOutlineCanvas = null;
+  state.ofColorCanvas = null;
+  state.ifOutlineCanvas = null;
+  state.ifColorCanvas = null;
+  state.ifInkCanvas = null;
+  state.stOutlineCanvas = null;
+  state.stFillPts = null;
+
+  // Auto-switch sidebar tab based on anim category (sync only, without recursive userInitiated switch)
+  const isDrawingAnim = typeof _OUTLINE_ANIM_MODES !== 'undefined' && _OUTLINE_ANIM_MODES.has(anim);
+  switchSidebarTab(isDrawingAnim ? 'drawing' : 'animation', false);
 
   const isSpec    = anim.startsWith('spec-');
   const isChunk   = anim === 'chunkjump';
@@ -8826,12 +8894,12 @@ function selectAnim(el) {
   document.getElementById('card-illustopts').style.display= isOutlineAnim ? 'block' : 'none';
   document.getElementById('card-outlineonlyopts').style.display= (anim==='outlineonly') ? 'block' : 'none';
   document.getElementById('card-textopts').style.display        = (anim==='spec-text')  ? 'block' : 'none';
-  document.getElementById('outline-detect-opts').style.display  = _OUTLINE_ANIM_MODES.has(anim) ? 'block' : 'none';
+  document.getElementById('outline-detect-opts').style.display  = isDrawingAnim ? 'block' : 'none';
   const el_movein = document.getElementById('movein-opts');
   if (el_movein) el_movein.style.display = isMoveIn ? 'block' : 'none';
   if (isMoveIn) syncMoveInOpts(layer);
   // Sync detection slider value to selected layer (or global)
-  if (_OUTLINE_ANIM_MODES.has(anim)) {
+  if (isDrawingAnim) {
     const layer3 = getSelectedLayer();
     syncDetectSlider((layer3?.outlineDetect ?? state.outlineDetect) ?? 50);
     syncDetectAlgButtons((layer3?.outlineAlgorithm ?? state.outlineAlgorithm) ?? 'classic');
@@ -8855,17 +8923,21 @@ function selectAnim(el) {
   }
 
   const infoBox = document.getElementById('spec-info');
-  if (SPEC_INFO[anim]) {
+  if (typeof SPEC_INFO !== 'undefined' && SPEC_INFO[anim]) {
     document.getElementById('spec-info-title').textContent = SPEC_INFO[anim].title;
     document.getElementById('spec-info-desc').textContent  = SPEC_INFO[anim].desc;
     infoBox.style.display = 'block';
-  } else {
+  } else if (infoBox) {
     infoBox.style.display = 'none';
   }
   const _animIcon = el.querySelector('.anim-icon');
-  document.getElementById('anim-style-label').textContent = _animIcon
-    ? _animIcon.textContent + ' ' + el.textContent.replace(_animIcon.textContent, '').trim()
-    : el.textContent.trim();
+  const animLabelEl = document.getElementById('anim-style-label');
+  if (animLabelEl) {
+    animLabelEl.textContent = _animIcon
+      ? _animIcon.textContent + ' ' + el.textContent.replace(_animIcon.textContent, '').trim()
+      : el.textContent.trim();
+  }
+  if (typeof syncTopbarLabels === 'function') syncTopbarLabels();
   scheduleAutoSave();
 }
 
@@ -8951,7 +9023,11 @@ function redrawWithBg() {
     if (layer.visible === false) return;
     ctx.save();
     ctx.globalAlpha = layer.opacity !== undefined ? layer.opacity : 1;
-    ctx.drawImage(layer.img, layer.x, layer.y, layer.w, layer.h);
+    if (layer.img && (layer.img.complete || layer.img.naturalWidth > 0)) {
+      ctx.drawImage(layer.img, layer.x, layer.y, layer.w, layer.h);
+    } else if (layer._canvas) {
+      ctx.drawImage(layer._canvas, layer.x, layer.y, layer.w, layer.h);
+    }
     ctx.restore();
   });
   drawSelectionHandles();
@@ -9586,79 +9662,81 @@ function _commitTextLayer(text) {
   const _placeY     = _ts.canvasY;
   // Snapshot layer properties we want to carry over on edit
   const _oldLayer   = _editingId !== null
-    ? state.layers.find(l => l.id === _editingId) || null
+    ? state.layers.find(l => l && l.id === _editingId) || null
     : null;
 
-  const img = new Image();
-  img.onload = () => {
-    // If editing an existing layer, remove it first
-    let finalX = _placeX, finalY = _placeY;
-    if (_editingId !== null) {
-      const idx = state.layers.findIndex(l => l.id === _editingId);
-      if (idx !== -1) {
-        // Preserve position + stack index from old layer
-        const oldLayer = state.layers[idx];
-        finalX = oldLayer.x;
-        finalY = oldLayer.y;
-        pushUndoSnapshot();
-        state.layers.splice(idx, 1, null); // placeholder keeps the index
-      }
-    } else {
-      pushUndoSnapshot();
+  // If editing an existing layer, remove it first
+  let finalX = _placeX, finalY = _placeY;
+  let replaceIdx = -1;
+  if (_editingId !== null) {
+    const idx = state.layers.findIndex(l => l && l.id === _editingId);
+    if (idx !== -1) {
+      const oldLayer = state.layers[idx];
+      finalX = oldLayer.x;
+      finalY = oldLayer.y;
+      replaceIdx = idx;
     }
+  }
+  pushUndoSnapshot();
 
-    const id = ++_layerIdCounter;
-    const layer = {
-      id,
-      name: text.split('\n')[0].slice(0, 24) || 'Text',
-      img,
-      x: Math.round(finalX),
-      y: Math.round(finalY),
-      w: Math.ceil(maxW),
-      h: Math.ceil(totalH),
-      baseW: Math.ceil(maxW),
-      baseH: Math.ceil(totalH),
-      resizePct: 100,
-      animStyle:  _oldLayer ? _oldLayer.animStyle  : (state.animStyle || 'spec-text'),
-      hand:       _oldLayer ? _oldLayer.hand       : (state.hand || 'custom1'),
-      animOrder:  _oldLayer ? _oldLayer.animOrder  : null,
-      opacity:    _oldLayer ? _oldLayer.opacity    : 1,
-      visible:    _oldLayer ? _oldLayer.visible    : true,
-      groupId:    _oldLayer ? _oldLayer.groupId    : null,
-      speed:      _oldLayer ? _oldLayer.speed      : 40,
-      handSpeed:  _oldLayer ? _oldLayer.handSpeed  : 6,
-      chunks:     _oldLayer ? _oldLayer.chunks     : 30,
-      specChunks: _oldLayer ? _oldLayer.specChunks : 35,
-      hasPngAlpha: true,
-      moveDirection: _oldLayer ? _oldLayer.moveDirection : (state.moveDirection || 'left'),
-      moveEasing:    _oldLayer ? _oldLayer.moveEasing    : (state.moveEasing || 'ease-out'),
-      moveHand:      _oldLayer ? (_oldLayer.moveHand !== undefined ? _oldLayer.moveHand : true) : (state.moveHand !== false),
-      // Text metadata for re-editing
-      kind:            'text',
-      _textContent:    text,
-      _textFont:       font,
-      _textSize:       size,
-      _textBold:       bold,
-      _textItalic:     italic,
-      _textAlign:      align,
-      _textColor:      color,
-      _textLineHeight: lh,
-      _textSpacing:    sp,
-    };
-    // Replace placeholder (edit) or append (new)
-    const phIdx = state.layers.indexOf(null);
-    if (phIdx !== -1) {
-      state.layers[phIdx] = layer;
-    } else {
-      state.layers.push(layer);
-    }
-    fitCanvas();
-    renderLayerList();
-    selectLayer(id);
+  const id = ++_layerIdCounter;
+  const img = new Image();
+  const layer = {
+    id,
+    name: text.split('\n')[0].slice(0, 24) || 'Text',
+    img,
+    _canvas: tc,
+    x: Math.round(finalX),
+    y: Math.round(finalY),
+    w: Math.ceil(maxW),
+    h: Math.ceil(totalH),
+    baseW: Math.ceil(maxW),
+    baseH: Math.ceil(totalH),
+    resizePct: 100,
+    animStyle:  _oldLayer ? _oldLayer.animStyle  : (typeof _OUTLINE_ANIM_MODES !== 'undefined' && _OUTLINE_ANIM_MODES.has(state.animStyle) ? state.animStyle : 'spec-text'),
+    hand:       _oldLayer ? _oldLayer.hand       : (state.hand || 'custom1'),
+    animOrder:  _oldLayer ? _oldLayer.animOrder  : null,
+    opacity:    _oldLayer ? _oldLayer.opacity    : 1,
+    visible:    _oldLayer ? _oldLayer.visible    : true,
+    groupId:    _oldLayer ? _oldLayer.groupId    : null,
+    speed:      _oldLayer ? _oldLayer.speed      : 40,
+    handSpeed:  _oldLayer ? _oldLayer.handSpeed  : 6,
+    chunks:     _oldLayer ? _oldLayer.chunks     : 30,
+    specChunks: _oldLayer ? _oldLayer.specChunks : 35,
+    hasPngAlpha: true,
+    moveDirection: _oldLayer ? _oldLayer.moveDirection : (state.moveDirection || 'left'),
+    moveEasing:    _oldLayer ? _oldLayer.moveEasing    : (state.moveEasing || 'ease-out'),
+    moveHand:      _oldLayer ? (_oldLayer.moveHand !== undefined ? _oldLayer.moveHand : true) : (state.moveHand !== false),
+    // Text metadata for re-editing
+    kind:            'text',
+    _textContent:    text,
+    _textFont:       font,
+    _textSize:       size,
+    _textBold:       bold,
+    _textItalic:     italic,
+    _textAlign:      align,
+    _textColor:      color,
+    _textLineHeight: lh,
+    _textSpacing:    sp,
+  };
+
+  // Replace old layer (edit) or append (new)
+  if (replaceIdx !== -1) {
+    state.layers.splice(replaceIdx, 1, layer);
+  } else {
+    state.layers.push(layer);
+  }
+
+  img.onload = () => {
     redrawLayersOnCanvas();
-    scheduleAutoSave();
   };
   img.src = tc.toDataURL();
+
+  fitCanvas();
+  renderLayerList();
+  selectLayer(id);
+  redrawLayersOnCanvas();
+  scheduleAutoSave();
 }
 
 // Legacy wrapper kept for any older call sites
@@ -9730,7 +9808,11 @@ function preRender(existingBgCanvas) {
   const oc = offscreen.getContext('2d', { willReadFrequently: true });
   if (layer) {
     oc.save(); oc.globalAlpha = (layer.opacity !== undefined ? layer.opacity : 1);
-    oc.drawImage(layer.img, layer.x, layer.y, layer.w, layer.h);
+    if (layer.img && (layer.img.complete || layer.img.naturalWidth > 0)) {
+      oc.drawImage(layer.img, layer.x, layer.y, layer.w, layer.h);
+    } else if (layer._canvas) {
+      oc.drawImage(layer._canvas, layer.x, layer.y, layer.w, layer.h);
+    }
     oc.restore();
   } else {
     const text  = document.getElementById('text-input').value || 'Hello, World!';
