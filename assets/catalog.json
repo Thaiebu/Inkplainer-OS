@@ -1,0 +1,1871 @@
+[
+  {
+    "id": "avatar-man-prof",
+    "title": "Professional Man",
+    "category": "avatars",
+    "tags": [
+      "man",
+      "avatar",
+      "face",
+      "person",
+      "male",
+      "profile",
+      "business"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "avatar-woman-prof",
+    "title": "Professional Woman",
+    "category": "avatars",
+    "tags": [
+      "woman",
+      "avatar",
+      "female",
+      "person",
+      "face",
+      "profile",
+      "business"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "avatar-coder",
+    "title": "Developer with Glasses",
+    "category": "avatars",
+    "tags": [
+      "developer",
+      "coder",
+      "engineer",
+      "tech",
+      "geek",
+      "glasses",
+      "avatar"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "avatar-creative",
+    "title": "Creative Designer",
+    "category": "avatars",
+    "tags": [
+      "designer",
+      "creative",
+      "artist",
+      "avatar",
+      "hair",
+      "freelancer"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "avatar-student",
+    "title": "Student with Beanie",
+    "category": "avatars",
+    "tags": [
+      "student",
+      "young",
+      "beanie",
+      "teen",
+      "learner",
+      "avatar"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-presenter",
+    "title": "Presenter Explaining",
+    "category": "characters",
+    "tags": [
+      "presenter",
+      "teacher",
+      "explaining",
+      "speaker",
+      "pointing",
+      "whiteboard"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-celebrating",
+    "title": "Person Cheering / Winner",
+    "category": "characters",
+    "tags": [
+      "cheering",
+      "success",
+      "happy",
+      "excited",
+      "jumping",
+      "celebrate"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-thinking",
+    "title": "Person Thinking / Confused",
+    "category": "characters",
+    "tags": [
+      "thinking",
+      "wondering",
+      "confused",
+      "question",
+      "curious",
+      "character"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-working-desk",
+    "title": "Person at Laptop",
+    "category": "characters",
+    "tags": [
+      "desk",
+      "laptop",
+      "typing",
+      "working",
+      "computer",
+      "coder",
+      "office"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-running",
+    "title": "Person Running Fast",
+    "category": "characters",
+    "tags": [
+      "running",
+      "speed",
+      "fast",
+      "agile",
+      "sprint",
+      "motion",
+      "person"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-growth-chart",
+    "title": "Growth Chart Trend",
+    "category": "business",
+    "tags": [
+      "chart",
+      "growth",
+      "kpi",
+      "revenue",
+      "graph",
+      "increase",
+      "success"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-handshake",
+    "title": "Handshake Deal",
+    "category": "business",
+    "tags": [
+      "handshake",
+      "deal",
+      "agreement",
+      "partner",
+      "contract",
+      "trust"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-briefcase",
+    "title": "Business Briefcase",
+    "category": "business",
+    "tags": [
+      "briefcase",
+      "work",
+      "job",
+      "corporate",
+      "suitcase",
+      "office"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-presentation",
+    "title": "Whiteboard Presentation",
+    "category": "business",
+    "tags": [
+      "presentation",
+      "meeting",
+      "easel",
+      "board",
+      "pitch",
+      "slide"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-coins",
+    "title": "Money & Investment",
+    "category": "business",
+    "tags": [
+      "money",
+      "coins",
+      "finance",
+      "cash",
+      "wealth",
+      "budget",
+      "roi"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-ai-brain",
+    "title": "AI Neural Brain",
+    "category": "tech",
+    "tags": [
+      "ai",
+      "brain",
+      "neural",
+      "artificial intelligence",
+      "machine learning",
+      "tech"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-cloud-database",
+    "title": "Cloud Storage & Server",
+    "category": "tech",
+    "tags": [
+      "cloud",
+      "database",
+      "storage",
+      "server",
+      "hosting",
+      "backend"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-smartphone",
+    "title": "Smartphone Mobile App",
+    "category": "tech",
+    "tags": [
+      "phone",
+      "mobile",
+      "smartphone",
+      "app",
+      "ui",
+      "device",
+      "responsive"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-robot",
+    "title": "Robot Assistant",
+    "category": "tech",
+    "tags": [
+      "robot",
+      "bot",
+      "automation",
+      "agent",
+      "assistant",
+      "ai",
+      "android"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-code-window",
+    "title": "Coding Browser Window",
+    "category": "tech",
+    "tags": [
+      "code",
+      "browser",
+      "programming",
+      "software",
+      "window",
+      "web"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "edu-graduation-cap",
+    "title": "Graduation Cap",
+    "category": "education",
+    "tags": [
+      "education",
+      "degree",
+      "university",
+      "college",
+      "academy",
+      "school",
+      "learn"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "edu-book-open",
+    "title": "Open Reading Book",
+    "category": "education",
+    "tags": [
+      "book",
+      "read",
+      "knowledge",
+      "study",
+      "literature",
+      "library"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "edu-flask-chemistry",
+    "title": "Science Flask Experiment",
+    "category": "education",
+    "tags": [
+      "science",
+      "chemistry",
+      "flask",
+      "experiment",
+      "lab",
+      "research",
+      "formula"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "edu-microscope",
+    "title": "Microscope Research",
+    "category": "education",
+    "tags": [
+      "microscope",
+      "biology",
+      "research",
+      "lab",
+      "science",
+      "discovery"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "animal-owl",
+    "title": "Wise Owl",
+    "category": "animals",
+    "tags": [
+      "owl",
+      "bird",
+      "wisdom",
+      "smart",
+      "clever",
+      "animal",
+      "night"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "animal-dog",
+    "title": "Happy Dog",
+    "category": "animals",
+    "tags": [
+      "dog",
+      "puppy",
+      "pet",
+      "friendly",
+      "animal",
+      "cute"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "animal-cat",
+    "title": "Curious Cat",
+    "category": "animals",
+    "tags": [
+      "cat",
+      "kitten",
+      "pet",
+      "curious",
+      "animal",
+      "cute"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "arrow-curved-right",
+    "title": "Curved Arrow Right",
+    "category": "arrows",
+    "tags": [
+      "arrow",
+      "curve",
+      "pointer",
+      "next",
+      "flow",
+      "direction"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "arrow-loop-cycle",
+    "title": "Loop / Cycle Arrow",
+    "category": "arrows",
+    "tags": [
+      "loop",
+      "cycle",
+      "repeat",
+      "process",
+      "recycle",
+      "arrow"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "arrow-zigzag-growth",
+    "title": "Zigzag Trend Arrow",
+    "category": "arrows",
+    "tags": [
+      "zigzag",
+      "arrow",
+      "stairs",
+      "steps",
+      "growth",
+      "path"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "arrow-double-ended",
+    "title": "Two-Way Direction Arrow",
+    "category": "arrows",
+    "tags": [
+      "double arrow",
+      "comparison",
+      "both",
+      "bidirectional",
+      "exchange"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "bubble-speech-chat",
+    "title": "Speech Bubble",
+    "category": "bubbles",
+    "tags": [
+      "bubble",
+      "speech",
+      "chat",
+      "talk",
+      "message",
+      "dialogue"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "bubble-thought-cloud",
+    "title": "Thought Cloud",
+    "category": "bubbles",
+    "tags": [
+      "thought",
+      "cloud",
+      "thinking",
+      "dream",
+      "idea",
+      "bubble"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "bubble-starburst-shout",
+    "title": "Explosion / Alert Starburst",
+    "category": "bubbles",
+    "tags": [
+      "shout",
+      "explosion",
+      "starburst",
+      "sale",
+      "new",
+      "pop",
+      "wow",
+      "alert"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "doodle-lightbulb-spark",
+    "title": "Idea Lightbulb",
+    "category": "doodles",
+    "tags": [
+      "idea",
+      "lightbulb",
+      "solution",
+      "spark",
+      "creative",
+      "bright"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "doodle-target-kpi",
+    "title": "Bullseye Target",
+    "category": "doodles",
+    "tags": [
+      "target",
+      "goal",
+      "bullseye",
+      "aim",
+      "focus",
+      "objective"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "doodle-rocket-ship",
+    "title": "Startup Rocket",
+    "category": "doodles",
+    "tags": [
+      "rocket",
+      "launch",
+      "startup",
+      "fast",
+      "growth",
+      "speed"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "doodle-check-badge",
+    "title": "Verified Check Badge",
+    "category": "doodles",
+    "tags": [
+      "check",
+      "done",
+      "badge",
+      "approved",
+      "verified",
+      "success",
+      "correct"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "doodle-question-mark",
+    "title": "Question Mark Query",
+    "category": "doodles",
+    "tags": [
+      "question",
+      "help",
+      "why",
+      "faq",
+      "doubt",
+      "ask",
+      "query"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "doodle-gear-settings",
+    "title": "Gear / Configuration",
+    "category": "doodles",
+    "tags": [
+      "gear",
+      "settings",
+      "config",
+      "mechanism",
+      "engineering",
+      "process"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "deco-squiggly-underline",
+    "title": "Hand-drawn Underline",
+    "category": "decorative",
+    "tags": [
+      "underline",
+      "accent",
+      "hand-drawn",
+      "squiggly",
+      "emphasis",
+      "line"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "deco-sparkles-magic",
+    "title": "Magic Sparkles",
+    "category": "decorative",
+    "tags": [
+      "sparkles",
+      "magic",
+      "shine",
+      "clean",
+      "star",
+      "highlight",
+      "ai"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "deco-frame-corner",
+    "title": "Hand-drawn Box Frame",
+    "category": "decorative",
+    "tags": [
+      "frame",
+      "box",
+      "border",
+      "card",
+      "container",
+      "outline"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-waving",
+    "title": "Person Waving Hello",
+    "category": "characters",
+    "tags": [
+      "waving",
+      "hello",
+      "greeting",
+      "friendly",
+      "welcome",
+      "person",
+      "human"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-running",
+    "title": "Person Running Fast",
+    "category": "characters",
+    "tags": [
+      "running",
+      "speed",
+      "fast",
+      "sprint",
+      "athlete",
+      "quick",
+      "hurry"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-walking",
+    "title": "Person Walking with Bag",
+    "category": "characters",
+    "tags": [
+      "walking",
+      "commute",
+      "journey",
+      "steps",
+      "pedestrian",
+      "person",
+      "bag"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-sitting-reading",
+    "title": "Person Sitting Reading",
+    "category": "characters",
+    "tags": [
+      "reading",
+      "sitting",
+      "relax",
+      "book",
+      "learn",
+      "student",
+      "study"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-tablet-user",
+    "title": "Person Using Tablet",
+    "category": "characters",
+    "tags": [
+      "tablet",
+      "device",
+      "mobile",
+      "working",
+      "screen",
+      "tech",
+      "online"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-jumping-joy",
+    "title": "Person Leaping in Joy",
+    "category": "characters",
+    "tags": [
+      "joy",
+      "excited",
+      "leap",
+      "energy",
+      "triumph",
+      "celebration",
+      "happy"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-two-highfive",
+    "title": "Colleagues High-Five",
+    "category": "characters",
+    "tags": [
+      "highfive",
+      "team",
+      "collaboration",
+      "partnership",
+      "success",
+      "friends",
+      "deal"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "char-pointing-up",
+    "title": "Person with Eureka Idea",
+    "category": "characters",
+    "tags": [
+      "idea",
+      "pointing",
+      "eureka",
+      "solution",
+      "inspiration",
+      "lightbulb"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "nature-tree",
+    "title": "Deciduous Tree",
+    "category": "nature",
+    "tags": [
+      "tree",
+      "forest",
+      "nature",
+      "wood",
+      "plant",
+      "green",
+      "eco",
+      "organic"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "nature-pine",
+    "title": "Pine Tree",
+    "category": "nature",
+    "tags": [
+      "pine",
+      "conifer",
+      "christmas",
+      "forest",
+      "mountain",
+      "winter",
+      "nature"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "nature-potted-plant",
+    "title": "Potted Houseplant",
+    "category": "nature",
+    "tags": [
+      "plant",
+      "potted",
+      "leaf",
+      "home",
+      "decor",
+      "indoor",
+      "office",
+      "growth"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "nature-mountain-sun",
+    "title": "Mountain with Rising Sun",
+    "category": "nature",
+    "tags": [
+      "mountain",
+      "sun",
+      "peak",
+      "climb",
+      "summit",
+      "horizon",
+      "landscape",
+      "outdoor"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "nature-sprout",
+    "title": "Growing Seedling Sprout",
+    "category": "nature",
+    "tags": [
+      "sprout",
+      "seedling",
+      "grow",
+      "growth",
+      "nurture",
+      "ecology",
+      "start",
+      "plant"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "nature-flower",
+    "title": "Blooming Flower",
+    "category": "nature",
+    "tags": [
+      "flower",
+      "bloom",
+      "blossom",
+      "petal",
+      "garden",
+      "spring",
+      "beauty",
+      "nature"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "nature-sun-cloud",
+    "title": "Sun Behind Cloud",
+    "category": "nature",
+    "tags": [
+      "sun",
+      "cloud",
+      "weather",
+      "day",
+      "sky",
+      "summer",
+      "forecast"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "nature-water-drop",
+    "title": "Clean Water Drop",
+    "category": "nature",
+    "tags": [
+      "water",
+      "drop",
+      "liquid",
+      "hydration",
+      "clean",
+      "eco",
+      "pure",
+      "rain"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "nature-earth-globe",
+    "title": "Planet Earth Globe",
+    "category": "nature",
+    "tags": [
+      "earth",
+      "globe",
+      "world",
+      "planet",
+      "environment",
+      "sustainability",
+      "global"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-robot-humanoid",
+    "title": "Friendly Humanoid Robot",
+    "category": "tech",
+    "tags": [
+      "robot",
+      "humanoid",
+      "android",
+      "ai",
+      "automation",
+      "bot",
+      "future"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-robot-arm",
+    "title": "Industrial Robot Arm",
+    "category": "tech",
+    "tags": [
+      "robot",
+      "arm",
+      "manufacturing",
+      "industry",
+      "automation",
+      "assembly",
+      "hardware"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-drone",
+    "title": "Flying Quadcopter Drone",
+    "category": "tech",
+    "tags": [
+      "drone",
+      "quadcopter",
+      "fly",
+      "uav",
+      "aerial",
+      "delivery",
+      "camera"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-satellite",
+    "title": "Orbital Satellite",
+    "category": "tech",
+    "tags": [
+      "satellite",
+      "space",
+      "orbit",
+      "telecom",
+      "signal",
+      "gps",
+      "broadcast"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-neural-net",
+    "title": "Neural Network / Deep Learning",
+    "category": "tech",
+    "tags": [
+      "neural",
+      "network",
+      "ai",
+      "machine learning",
+      "deep learning",
+      "nodes",
+      "graph"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-vr-headset",
+    "title": "VR / AR Headset",
+    "category": "tech",
+    "tags": [
+      "vr",
+      "ar",
+      "metaverse",
+      "headset",
+      "virtual reality",
+      "gaming",
+      "future"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-smartwatch",
+    "title": "Smart Watch",
+    "category": "tech",
+    "tags": [
+      "smartwatch",
+      "watch",
+      "wearable",
+      "fitness",
+      "iot",
+      "heart rate"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "tech-microchip-cpu",
+    "title": "AI Microchip Processor",
+    "category": "tech",
+    "tags": [
+      "chip",
+      "cpu",
+      "processor",
+      "silicon",
+      "hardware",
+      "semiconductor",
+      "ai"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-kanban-board",
+    "title": "Agile Kanban Board",
+    "category": "business",
+    "tags": [
+      "kanban",
+      "agile",
+      "scrum",
+      "tasks",
+      "workflow",
+      "board",
+      "sprint"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-handshake-deal",
+    "title": "Handshake Partnership",
+    "category": "business",
+    "tags": [
+      "handshake",
+      "deal",
+      "agreement",
+      "contract",
+      "partnership",
+      "trust"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-target-bullseye",
+    "title": "Target Bullseye with Arrow",
+    "category": "business",
+    "tags": [
+      "target",
+      "bullseye",
+      "goal",
+      "mission",
+      "focus",
+      "objective",
+      "kpi"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-podium-trophy",
+    "title": "Trophy on Winner Podium",
+    "category": "business",
+    "tags": [
+      "trophy",
+      "winner",
+      "first",
+      "podium",
+      "achievement",
+      "award",
+      "rank"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-analytics-funnel",
+    "title": "Conversion Funnel",
+    "category": "business",
+    "tags": [
+      "funnel",
+      "sales",
+      "conversion",
+      "leads",
+      "analytics",
+      "pipeline"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-sticky-notes",
+    "title": "Brainstorm Sticky Notes",
+    "category": "business",
+    "tags": [
+      "sticky",
+      "notes",
+      "postit",
+      "brainstorm",
+      "ideas",
+      "planning"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-shield-secure",
+    "title": "Cybersecurity Trust Shield",
+    "category": "business",
+    "tags": [
+      "shield",
+      "security",
+      "privacy",
+      "protection",
+      "safe",
+      "trust",
+      "verified"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "biz-megaphone-loud",
+    "title": "Marketing Megaphone",
+    "category": "business",
+    "tags": [
+      "megaphone",
+      "announce",
+      "marketing",
+      "broadcast",
+      "news",
+      "promotion",
+      "alert"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-laptop-analytics",
+    "title": "Analytics Dashboard Laptop",
+    "category": "color",
+    "tags": [
+      "laptop",
+      "computer",
+      "analytics",
+      "chart",
+      "screen",
+      "dashboard",
+      "color",
+      "clipart",
+      "tech"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-smartphone-app",
+    "title": "Mobile Phone App",
+    "category": "color",
+    "tags": [
+      "phone",
+      "smartphone",
+      "mobile",
+      "app",
+      "notification",
+      "color",
+      "clipart",
+      "tech"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-lightbulb-idea",
+    "title": "Golden Idea Lightbulb",
+    "category": "color",
+    "tags": [
+      "lightbulb",
+      "bulb",
+      "idea",
+      "creative",
+      "smart",
+      "spark",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-rocket-launch",
+    "title": "Space Rocket Launch",
+    "category": "color",
+    "tags": [
+      "rocket",
+      "launch",
+      "startup",
+      "growth",
+      "speed",
+      "space",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-trophy-gold",
+    "title": "Gold Champion Trophy",
+    "category": "color",
+    "tags": [
+      "trophy",
+      "winner",
+      "first",
+      "award",
+      "achievement",
+      "success",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-target-bullseye",
+    "title": "Target Bullseye Arrow",
+    "category": "color",
+    "tags": [
+      "target",
+      "bullseye",
+      "goal",
+      "mission",
+      "focus",
+      "objective",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-team-presentation",
+    "title": "Speaker Presenting Chart",
+    "category": "color",
+    "tags": [
+      "presentation",
+      "speaker",
+      "chart",
+      "growth",
+      "meeting",
+      "business",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-developer-laptop",
+    "title": "Developer Coding",
+    "category": "color",
+    "tags": [
+      "developer",
+      "coder",
+      "engineer",
+      "laptop",
+      "tech",
+      "software",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-shopping-cart",
+    "title": "Online Shopping Cart",
+    "category": "color",
+    "tags": [
+      "shopping",
+      "cart",
+      "ecommerce",
+      "store",
+      "buy",
+      "order",
+      "gift",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-cloud-database",
+    "title": "Cloud Database Server",
+    "category": "color",
+    "tags": [
+      "cloud",
+      "database",
+      "server",
+      "hosting",
+      "storage",
+      "data",
+      "color",
+      "clipart",
+      "tech"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-credit-card",
+    "title": "Secure Credit Card",
+    "category": "color",
+    "tags": [
+      "payment",
+      "credit card",
+      "finance",
+      "money",
+      "banking",
+      "secure",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-calendar-event",
+    "title": "Calendar Schedule",
+    "category": "color",
+    "tags": [
+      "calendar",
+      "date",
+      "schedule",
+      "event",
+      "deadline",
+      "planning",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-shield-verified",
+    "title": "Verified Security Shield",
+    "category": "color",
+    "tags": [
+      "shield",
+      "security",
+      "protection",
+      "safe",
+      "verified",
+      "trust",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-coffee-donut",
+    "title": "Coffee Cup & Donut",
+    "category": "color",
+    "tags": [
+      "coffee",
+      "donut",
+      "cafe",
+      "breakfast",
+      "food",
+      "relax",
+      "break",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-plant-succulent",
+    "title": "Potted Succulent",
+    "category": "color",
+    "tags": [
+      "plant",
+      "succulent",
+      "flower",
+      "green",
+      "garden",
+      "nature",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-paint-palette",
+    "title": "Artist Paint Palette",
+    "category": "color",
+    "tags": [
+      "paint",
+      "palette",
+      "art",
+      "artist",
+      "creative",
+      "design",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-books-stack",
+    "title": "Study Books Stack",
+    "category": "color",
+    "tags": [
+      "books",
+      "study",
+      "education",
+      "reading",
+      "school",
+      "learn",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-music-headphones",
+    "title": "Vibrant Headphones",
+    "category": "color",
+    "tags": [
+      "headphones",
+      "music",
+      "audio",
+      "sound",
+      "song",
+      "listen",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-chat-bubbles",
+    "title": "Speech & Chat Bubbles",
+    "category": "color",
+    "tags": [
+      "chat",
+      "bubbles",
+      "message",
+      "talk",
+      "conversation",
+      "feedback",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "color-ai-brain",
+    "title": "AI Neural Brain",
+    "category": "color",
+    "tags": [
+      "brain",
+      "ai",
+      "neural",
+      "mind",
+      "intellect",
+      "machine learning",
+      "future",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-reading",
+    "title": "Reading Book (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "reading",
+      "book",
+      "person",
+      "relax",
+      "learn",
+      "student",
+      "study",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-chilling",
+    "title": "Chilling with Coffee (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "chilling",
+      "coffee",
+      "sitting",
+      "relax",
+      "break",
+      "peace",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-dancing",
+    "title": "Groovy Dancing (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "dancing",
+      "dance",
+      "happy",
+      "party",
+      "fun",
+      "joy",
+      "music",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-loving",
+    "title": "Loving Big Heart (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "loving",
+      "heart",
+      "hug",
+      "love",
+      "care",
+      "sweet",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-meditating",
+    "title": "Meditating Zen (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "meditating",
+      "zen",
+      "yoga",
+      "peace",
+      "mindfulness",
+      "lotus",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-sprinting",
+    "title": "Sprinting Forward (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "running",
+      "sprint",
+      "fast",
+      "sport",
+      "exercise",
+      "speed",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-dog-walking",
+    "title": "Walking Dog (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "dog",
+      "pet",
+      "walk",
+      "puppy",
+      "animal",
+      "leash",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-idea",
+    "title": "Bright Idea (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "idea",
+      "lightbulb",
+      "inspiration",
+      "thought",
+      "creativity",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-working",
+    "title": "Working on Laptop (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "laptop",
+      "work",
+      "coder",
+      "developer",
+      "remote",
+      "desk",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-coffee",
+    "title": "Morning Coffee Sip (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "coffee",
+      "mug",
+      "sip",
+      "morning",
+      "drink",
+      "cafe",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-strolling",
+    "title": "Casual Strolling (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "stroll",
+      "walk",
+      "chill",
+      "steps",
+      "calm",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "od-celebrating",
+    "title": "Celebrating Win (Open Doodles)",
+    "category": "opendoodles",
+    "tags": [
+      "opendoodles",
+      "celebrating",
+      "win",
+      "party",
+      "success",
+      "confetti",
+      "yay",
+      "sketch",
+      "doodle",
+      "color"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-growth-analytics",
+    "title": "Growth Analytics Dashboard (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "analytics",
+      "growth",
+      "chart",
+      "dashboard",
+      "metrics",
+      "stats",
+      "business",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-rocket-launch",
+    "title": "Startup Rocket Launch (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "rocket",
+      "launch",
+      "startup",
+      "fly",
+      "space",
+      "speed",
+      "grow",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-cloud-sync",
+    "title": "Cloud Infrastructure & Sync (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "cloud",
+      "sync",
+      "hosting",
+      "server",
+      "database",
+      "network",
+      "tech",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-team-collaboration",
+    "title": "Team Collaboration & Brainstorm (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "team",
+      "collaboration",
+      "people",
+      "meeting",
+      "discussion",
+      "work",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-mobile-app",
+    "title": "Mobile App Mockup (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "mobile",
+      "phone",
+      "app",
+      "ui",
+      "ux",
+      "device",
+      "smartphone",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-security-shield",
+    "title": "Security Shield & Lock (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "security",
+      "shield",
+      "lock",
+      "safe",
+      "protection",
+      "privacy",
+      "cyber",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-online-shopping",
+    "title": "Online Shopping Cart (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "shopping",
+      "cart",
+      "store",
+      "ecommerce",
+      "retail",
+      "buy",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-ai-robot",
+    "title": "AI Robot Assistant (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "ai",
+      "robot",
+      "assistant",
+      "future",
+      "automation",
+      "tech",
+      "bot",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-video-call",
+    "title": "Video Conference Meeting (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "video",
+      "call",
+      "meeting",
+      "remote",
+      "conference",
+      "webcam",
+      "zoom",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-code-dev",
+    "title": "Code Editor & Dev (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "code",
+      "dev",
+      "developer",
+      "coding",
+      "programming",
+      "html",
+      "software",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-target-goal",
+    "title": "Bullseye Target & Success (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "target",
+      "goal",
+      "bullseye",
+      "aim",
+      "focus",
+      "achievement",
+      "win",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  },
+  {
+    "id": "undraw-education",
+    "title": "Education & Graduation (unDraw)",
+    "category": "undraw",
+    "tags": [
+      "undraw",
+      "education",
+      "graduation",
+      "degree",
+      "study",
+      "diploma",
+      "cap",
+      "school",
+      "color",
+      "clipart"
+    ],
+    "type": "svg"
+  }
+]

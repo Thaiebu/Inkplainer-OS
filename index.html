@@ -3472,36 +3472,79 @@ input[type="number"]:focus { border-color: var(--accent); }
 .clear-recents-btn:hover { color: #ef4444; }
 .recent-doodles-row {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   overflow-x: auto;
-  padding-bottom: 6px;
-  margin-bottom: 10px;
-  min-height: 48px;
+  padding: 2px 2px 8px 2px;
+  margin-bottom: 12px;
+  min-height: 64px;
+  scrollbar-width: thin;
+}
+.recent-doodles-row::-webkit-scrollbar {
+  height: 4px;
+}
+.recent-doodles-row::-webkit-scrollbar-thumb {
+  background: var(--border-hi);
+  border-radius: 4px;
 }
 .recent-doodle-chip {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: 58px;
+  min-height: 60px;
   border: 1px solid var(--border);
   border-radius: 7px;
   background: var(--bg);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   cursor: pointer;
-  padding: 4px;
-  transition: all 0.12s ease;
-  position: relative;
+  padding: 6px 4px 5px;
+  gap: 4px;
+  transition: all 0.13s ease;
+  user-select: none;
+  box-sizing: border-box;
 }
 .recent-doodle-chip:hover {
   border-color: var(--accent);
+  background: var(--accent-subtle);
   transform: translateY(-1px);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
-.recent-doodle-chip img, .recent-doodle-chip svg {
+.recent-doodle-thumb {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+.recent-doodle-thumb svg,
+.recent-doodle-thumb img,
+.recent-doodle-chip svg,
+.recent-doodle-chip img {
+  width: 26px;
+  height: 26px;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  pointer-events: none;
+}
+.recent-doodle-label {
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--muted-hi);
+  text-align: center;
+  width: 100%;
+  max-width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.15;
+  pointer-events: none;
+}
+.recent-doodle-chip:hover .recent-doodle-label {
+  color: var(--accent);
 }
 .doodle-grid {
   display: grid;
@@ -3512,6 +3555,7 @@ input[type="number"]:focus { border-color: var(--accent); }
   padding-right: 2px;
 }
 .doodle-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3557,6 +3601,21 @@ input[type="number"]:focus { border-color: var(--accent); }
 .doodle-card:hover .doodle-card-title {
   color: var(--accent);
   font-weight: 500;
+}
+.custom-asset-del-btn {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 10px;
+  color: var(--muted);
+  padding: 1px 4px;
+  border-radius: 3px;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+.custom-asset-del-btn:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
 }
 
 </style>
@@ -4411,7 +4470,8 @@ input[type="number"]:focus { border-color: var(--accent); }
     <div class="tab-group">
       <button class="tab-btn active" onclick="switchTab('image')">Image</button>
       <button class="tab-btn"        onclick="switchTab('text')">Text</button>
-      <button class="tab-btn"        onclick="switchTab('doodles')">🎨 Doodles</button>
+      <button class="tab-btn"        onclick="switchTab('assets')">🎨 Assets</button>
+      <button class="tab-btn"        onclick="switchTab('ai-slide')">✨ AI Slide</button>
     </div>
 
     <!-- IMAGE PANEL -->
@@ -4559,28 +4619,89 @@ input[type="number"]:focus { border-color: var(--accent); }
 
     </div>
 
-    <!-- DOODLES / ASSETS PANEL -->
-    <div id="doodles-panel" style="display:none;margin-top:10px;">
+    <!-- ASSETS PANEL -->
+    <div id="assets-panel" style="display:none;margin-top:10px;">
       <div class="doodle-search-wrap">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="doodle-search-input" placeholder="Search 48+ vector doodles..." oninput="DoodleLibrary.onDoodleSearch(this.value)">
+        <input type="text" id="asset-search-input" placeholder="Search 80+ avatars, doodles, tech..." oninput="AssetLibrary.onSearch(this.value)">
       </div>
-      <div class="doodle-cat-pills" id="doodle-cat-pills">
-        <button class="doodle-cat-pill active" onclick="DoodleLibrary.filterCategory('all', this)">All</button>
-        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('ideas', this)">💡 Ideas</button>
-        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('people', this)">👥 People</button>
-        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('business', this)">📈 Growth</button>
-        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('tech', this)">💻 Tech</button>
-        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('arrows', this)">🎯 Arrows</button>
-        <button class="doodle-cat-pill" onclick="DoodleLibrary.filterCategory('education', this)">📚 Science</button>
-      </div>
+      <div class="doodle-cat-pills" id="asset-cat-pills"></div>
       <div class="recent-doodles-header">
         <span>⭐ Recently Used Assets</span>
-        <button class="clear-recents-btn" onclick="DoodleLibrary.clearRecentAssets()">Clear</button>
+        <button class="clear-recents-btn" onclick="AssetLibrary.clearRecentAssets()">Clear</button>
       </div>
-      <div class="recent-doodles-row" id="recent-doodles-list"></div>
-      <div class="section-label" style="margin-top:12px;margin-bottom:6px;">Vector Doodle Library (Click to insert)</div>
-      <div class="doodle-grid" id="doodle-library-grid"></div>
+      <div class="recent-doodles-row" id="recent-assets-list"></div>
+      
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;margin-bottom:6px;">
+        <span class="section-label" style="margin:0;">Vector Asset Library</span>
+        <label style="cursor:pointer;font-size:10px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:3px;padding:3px 7px;background:rgba(255,255,255,0.06);border-radius:4px;border:1px solid var(--border-hi);">
+          <input type="file" accept="image/*,.svg" style="display:none;" onchange="AssetLibrary.handleCustomUpload(this)">
+          + Upload SVG/PNG
+        </label>
+      </div>
+      <div class="doodle-grid" id="asset-library-grid"></div>
+    </div>
+
+    <!-- AI PROMPT-TO-SLIDE PANEL -->
+    <div id="ai-slide-panel" style="display:none;margin-top:10px;">
+      <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border-hi);border-radius:8px;padding:12px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:11px;font-weight:600;color:var(--text);letter-spacing:0.3px;">✨ AI Whiteboard Architect</span>
+          <button type="button" onclick="toggleAiSettings()" style="font-size:10px;background:none;border:none;color:var(--accent);cursor:pointer;padding:0;">⚙️ Config</button>
+        </div>
+
+        <div id="ai-settings-drawer" style="display:none;background:rgba(0,0,0,0.3);border:1px solid var(--border-hi);border-radius:6px;padding:10px;margin-bottom:10px;">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">Provider</div>
+          <select id="ai-provider-select" onchange="onAiProviderChange(this.value)" style="width:100%;background:var(--panel);border:1px solid var(--border-hi);border-radius:4px;color:var(--text);font-size:11px;padding:5px;margin-bottom:8px;">
+            <option value="offline">⚡ Offline Smart Synthesizer (No API Key required)</option>
+            <option value="gemini">Google Gemini API (Free / Official)</option>
+            <option value="openrouter">OpenRouter / OpenAI</option>
+          </select>
+          <div id="ai-key-group" style="display:none;">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">API Key (stored locally)</div>
+            <input type="password" id="ai-api-key-input" placeholder="Enter API Key..." style="width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--border-hi);border-radius:4px;color:var(--text);font-size:11px;padding:6px;margin-bottom:8px;">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">Model Name</div>
+            <input type="text" id="ai-model-input" value="gemini-1.5-flash" placeholder="e.g. gemini-1.5-flash" style="width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--border-hi);border-radius:4px;color:var(--text);font-size:11px;padding:6px;margin-bottom:8px;">
+            <button type="button" onclick="saveAiSettings()" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:4px;padding:6px;font-size:11px;font-weight:600;cursor:pointer;">Save Key</button>
+          </div>
+        </div>
+
+        <div style="font-size:10px;color:var(--muted);margin-bottom:5px;">What whiteboard slide would you like to create?</div>
+        <textarea id="ai-slide-prompt" rows="3" placeholder="e.g. How AI works: 3 simple steps explaining human input, neural processing, and intelligent output with arrows and doodles." style="width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--border-hi);border-radius:6px;color:var(--text);font-family:inherit;font-size:11px;padding:8px;resize:vertical;outline:none;margin-bottom:8px;"></textarea>
+
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">
+          <div style="flex:1;">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:3px;">Visual Style</div>
+            <select id="ai-slide-style" style="width:100%;background:var(--panel);border:1px solid var(--border-hi);border-radius:4px;color:var(--text);font-size:11px;padding:5px;">
+              <option value="whiteboard">Classic Whiteboard (Caveat)</option>
+              <option value="business">Modern Corporate (DM Sans)</option>
+              <option value="creative">Playful Hand-drawn (Patrick Hand)</option>
+              <option value="tech">Tech Blueprint (Space Mono)</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="ai-generate-btn" type="button" onclick="triggerAiSlideGeneration()" style="width:100%;background:linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);color:#fff;border:none;border-radius:6px;padding:9px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(79,70,229,0.35);">
+          <span>⚡ Generate Slide Layout</span>
+        </button>
+      </div>
+
+      <!-- Preview container -->
+      <div id="ai-slide-preview-box" style="display:none;background:rgba(255,255,255,0.03);border:1px solid var(--accent);border-radius:8px;padding:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:11px;font-weight:600;color:var(--accent);">Slide Preview Ready</span>
+          <span id="ai-preview-count" style="font-size:10px;color:var(--muted);">0 elements</span>
+        </div>
+        <div id="ai-preview-elements-list" style="max-height:140px;overflow-y:auto;margin-bottom:10px;font-size:10px;color:var(--text);"></div>
+        <div style="display:flex;gap:6px;">
+          <button type="button" onclick="applyAiSlide()" style="flex:2;background:#16a34a;color:#fff;border:none;border-radius:6px;padding:8px;font-size:11px;font-weight:600;cursor:pointer;">
+            Apply to Current Slide
+          </button>
+          <button type="button" onclick="triggerAiSlideGeneration()" style="flex:1;background:rgba(255,255,255,0.08);color:var(--text);border:1px solid var(--border-hi);border-radius:6px;padding:8px;font-size:11px;cursor:pointer;">
+            Regenerate
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -4766,96 +4887,220 @@ function initDB() {
   });
 }
 
+// Helper function to serialize any single layer
+function serializeLayer(layer, index) {
+  if (!layer) return null;
+  return {
+    id: layer.id,
+    name: layer.name,
+    savedIndex: index !== undefined ? index : layer.savedIndex,
+    imageDataURL: getImageDataURL(layer.img),
+    origImageDataURL: layer._origImg ? getImageDataURL(layer._origImg) : null,
+    origX: layer._origX, origY: layer._origY,
+    origW: layer._origW, origH: layer._origH,
+    x: layer.x,
+    y: layer.y,
+    w: layer.w,
+    h: layer.h,
+    baseW: layer.baseW !== undefined ? layer.baseW : layer.w,
+    baseH: layer.baseH !== undefined ? layer.baseH : layer.h,
+    resizePct: layer.resizePct !== undefined ? layer.resizePct : 100,
+    animStyle: layer.animStyle || 'scanner',
+    hand: layer.hand || 'custom1',
+    animOrder: layer.animOrder !== undefined ? layer.animOrder : null,
+    opacity: layer.opacity !== undefined ? layer.opacity : 1,
+    visible: layer.visible !== undefined ? layer.visible : true,
+    groupId: layer.groupId || null,
+    speed: layer.speed !== undefined ? layer.speed : 40,
+    handSpeed: layer.handSpeed !== undefined ? layer.handSpeed : 6,
+    chunks: layer.chunks !== undefined ? layer.chunks : 30,
+    specChunks: layer.specChunks !== undefined ? layer.specChunks : 35,
+    hasPngAlpha: layer.hasPngAlpha || false,
+    outlineDetect: layer.outlineDetect,
+    outlineAlgorithm: layer.outlineAlgorithm,
+    outlineStrokeStyle: layer.outlineStrokeStyle,
+    colorStyle: layer.colorStyle,
+    outlineColor: layer.outlineColor,
+    outlineThickness: layer.outlineThickness,
+    textAnimDir: layer.textAnimDir,
+    textDrawStyle: layer.textDrawStyle,
+    zigzag: layer.zigzag,
+    moveDirection: layer.moveDirection || 'left',
+    moveEasing: layer.moveEasing || 'ease-out',
+    moveHand: layer.moveHand !== undefined ? layer.moveHand : true,
+    kind: layer.kind || (layer._textContent ? 'text' : null),
+    textProps: layer.textProps ? JSON.parse(JSON.stringify(layer.textProps)) : null,
+    _textContent: typeof layer._textContent === 'string' ? layer._textContent : (layer.kind === 'text' ? (layer.name || null) : null),
+    _textFont: layer._textFont || null,
+    _textSize: layer._textSize || null,
+    _textBold: layer._textBold || false,
+    _textItalic: layer._textItalic || false,
+    _textAlign: layer._textAlign || 'left',
+    _textColor: layer._textColor || null,
+    _textLineHeight: layer._textLineHeight || null,
+    _textSpacing: layer._textSpacing || null,
+  };
+}
+
+function deserializeLayer(layerData, index) {
+  return new Promise((resolve) => {
+    if (!layerData) { resolve(null); return; }
+    if (layerData.imageDataURL) {
+      const img = new Image();
+      img.onload = () => {
+        resolve({
+          id: layerData.id,
+          name: layerData.name,
+          _savedIndex: layerData.savedIndex ?? index,
+          img: img,
+          x: layerData.x,
+          y: layerData.y,
+          w: layerData.w,
+          h: layerData.h,
+          baseW: layerData.baseW !== undefined ? layerData.baseW : layerData.w,
+          baseH: layerData.baseH !== undefined ? layerData.baseH : layerData.h,
+          resizePct: layerData.resizePct !== undefined ? layerData.resizePct : 100,
+          animStyle: layerData.animStyle || 'scanner',
+          hand: layerData.hand || 'custom1',
+          animOrder: layerData.animOrder !== undefined ? layerData.animOrder : null,
+          opacity: layerData.opacity !== undefined ? layerData.opacity : 1,
+          visible: layerData.visible !== undefined ? layerData.visible : true,
+          groupId: layerData.groupId || null,
+          speed: layerData.speed !== undefined ? layerData.speed : 40,
+          handSpeed: layerData.handSpeed !== undefined ? layerData.handSpeed : 6,
+          chunks: layerData.chunks !== undefined ? layerData.chunks : 30,
+          specChunks: layerData.specChunks !== undefined ? layerData.specChunks : 35,
+          hasPngAlpha: layerData.hasPngAlpha || false,
+          outlineDetect: layerData.outlineDetect,
+          outlineAlgorithm: layerData.outlineAlgorithm,
+          outlineStrokeStyle: layerData.outlineStrokeStyle,
+          colorStyle: layerData.colorStyle,
+          outlineColor: layerData.outlineColor,
+          outlineThickness: layerData.outlineThickness,
+          textAnimDir: layerData.textAnimDir,
+          textDrawStyle: layerData.textDrawStyle,
+          zigzag: layerData.zigzag,
+          moveDirection: layerData.moveDirection || 'left',
+          moveEasing: layerData.moveEasing || 'ease-out',
+          moveHand: layerData.moveHand !== undefined ? layerData.moveHand : true,
+          kind: ((layerData.kind === 'text') ||
+                 (layerData.animStyle === 'spec-text') ||
+                 (typeof layerData._textContent === 'string' && layerData._textContent.trim().length > 0) ||
+                 (layerData.textProps && typeof layerData.textProps.text === 'string' && layerData.textProps.text.trim().length > 0))
+                ? 'text'
+                : (layerData.kind || 'image'),
+          textProps: layerData.textProps || null,
+          _textContent: (typeof layerData._textContent === 'string' && layerData._textContent.length > 0)
+            ? layerData._textContent
+            : (layerData.textProps?.text || ((layerData.kind === 'text' || layerData.animStyle === 'spec-text') ? layerData.name : null)),
+          _textFont: layerData._textFont || (layerData.textProps ? layerData.textProps.font : null),
+          _textSize: layerData._textSize || (layerData.textProps ? layerData.textProps.size : null),
+          _textBold: layerData._textBold || (layerData.textProps ? layerData.textProps.bold : false),
+          _textItalic: layerData._textItalic || (layerData.textProps ? layerData.textProps.italic : false),
+          _textAlign: layerData._textAlign || (layerData.textProps ? layerData.textProps.align : 'left'),
+          _textColor: layerData._textColor || (layerData.textProps ? layerData.textProps.color : null),
+          _textLineHeight: layerData._textLineHeight || (layerData.textProps ? layerData.textProps.lineHeight : 1.3),
+          _textSpacing: layerData._textSpacing || (layerData.textProps ? layerData.textProps.spacing : 0),
+        });
+      };
+      img.onerror = () => {
+        console.error('Failed to load layer image:', layerData.name);
+        resolve(null);
+      };
+      img.src = layerData.imageDataURL;
+    } else {
+      resolve(null);
+    }
+  });
+}
+
+async function deserializeLayers(layerDataList) {
+  if (!Array.isArray(layerDataList) || layerDataList.length === 0) return [];
+  const promises = layerDataList.map((ld, idx) => deserializeLayer(ld, idx));
+  const results = await Promise.all(promises);
+  const valid = results.filter(Boolean);
+  valid.sort((a, b) => (a._savedIndex ?? 0) - (b._savedIndex ?? 0));
+  valid.forEach(l => delete l._savedIndex);
+  return valid;
+}
+
 // Save current state to project
 function saveProject(projectId = currentProjectId) {
   if (!db || !projectId) return;
   
   try {
-  const transaction = db.transaction(['projects'], 'readwrite');
-  const objectStore = transaction.objectStore('projects');
-  const request = objectStore.get(projectId);
-  
-  request.onsuccess = () => {
-    const project = request.result;
-    if (project) {
-      // Save only essential state data
-      const savedState = {
-        // Canvas settings
-        canvasW: state.canvasW,
-        canvasH: state.canvasH,
-        canvasBg: state.canvasBg,
-        _currentRatio: _currentRatio,
-        _currentRes: _currentRes,
-        
-        // Layers with image data
-        layers: state.layers ? state.layers.map((layer, index) => ({
-          id: layer.id,
-          name: layer.name,
-          savedIndex: index, // preserve visual stack order across async load
-          imageDataURL: getImageDataURL(layer.img), // Convert image to data URL
-          x: layer.x,
-          y: layer.y,
-          w: layer.w,
-          h: layer.h,
-          baseW: layer.baseW,
-          baseH: layer.baseH,
-          resizePct: layer.resizePct,
-          animStyle: layer.animStyle,
-          hand: layer.hand,
-          animOrder: layer.animOrder,
-          opacity: layer.opacity,
-          visible: layer.visible,
-          groupId: layer.groupId,
-          speed: layer.speed,
-          handSpeed: layer.handSpeed,
-          chunks: layer.chunks,
-          specChunks: layer.specChunks,
-          hasPngAlpha: layer.hasPngAlpha,
-          // Layer-specific animation settings
-          outlineDetect: layer.outlineDetect,
-          outlineAlgorithm: layer.outlineAlgorithm,
-          outlineStrokeStyle: layer.outlineStrokeStyle,
-          colorStyle: layer.colorStyle,
-          outlineColor: layer.outlineColor,
-          outlineThickness: layer.outlineThickness,
-          textAnimDir: layer.textAnimDir,
-          textDrawStyle: layer.textDrawStyle,
-          moveDirection: layer.moveDirection,
-          moveEasing: layer.moveEasing,
-          moveHand: layer.moveHand,
-          // Text layer properties
-          kind: layer.kind,
-          textProps: layer.textProps,
-        })) : [],
-        
-        selectedLayerId: state.selectedLayerId,
-        groups: state.groups || [],
-        
-        // Animation settings
-        animStyle: state.animStyle,
-        hand: state.hand,
-        zigzag: state.zigzag,
-        
-        // Drawing settings
-        outlineDetect: state.outlineDetect,
-        outlineAlgorithm: state.outlineAlgorithm,
-        outlineStrokeStyle: state.outlineStrokeStyle,
-        colorStyle: state.colorStyle
-      };
-      
-      // Update project data
-      project.modifiedAt = new Date().toISOString();
-      project.state = savedState;
-      
-      objectStore.put(project);
-
-      // Check storage usage after each save (async, non-blocking)
-      checkStorageUsage();
-
-      // Show save indicator with time
-      showSaveIndicator();
+    // 1. Ensure active slide's layer array and background are synchronized first
+    if (typeof saveCurrentSlide === 'function') {
+      saveCurrentSlide();
     }
-  };
+
+    const transaction = db.transaction(['projects'], 'readwrite');
+    const objectStore = transaction.objectStore('projects');
+    const request = objectStore.get(projectId);
+    
+    request.onsuccess = () => {
+      const project = request.result;
+      if (project) {
+        // Serialize all slides with their respective layers
+        const rawSlides = (state.slides && state.slides.length > 0)
+          ? state.slides
+          : [{ id: 1, name: 'Slide 1', layers: state.layers || [], canvasBg: state.canvasBg, transition: 'eraser' }];
+
+        const savedSlides = rawSlides.map(s => ({
+          id: s.id,
+          name: s.name,
+          canvasBg: s.canvasBg ? JSON.parse(JSON.stringify(s.canvasBg)) : { type: 'solid', val: 'white' },
+          transition: s.transition || 'eraser',
+          layers: (s.layers || []).map((l, idx) => serializeLayer(l, idx)).filter(Boolean)
+        }));
+
+        // Active slide layers (for backward compatibility)
+        const activeLayers = (state.layers || []).map((l, idx) => serializeLayer(l, idx)).filter(Boolean);
+
+        // Save complete state data including ALL slides
+        const savedState = {
+          // Canvas settings
+          canvasW: state.canvasW,
+          canvasH: state.canvasH,
+          canvasBg: state.canvasBg,
+          _currentRatio: _currentRatio,
+          _currentRes: _currentRes,
+          
+          // MULTI-SLIDE PERSISTENCE
+          slides: savedSlides,
+          currentSlideIndex: state.currentSlideIndex || 0,
+          _slideIdCounter: state._slideIdCounter || 1,
+
+          // Active slide layers & selection
+          layers: activeLayers,
+          selectedLayerId: state.selectedLayerId,
+          groups: state.groups || [],
+          
+          // Animation settings
+          animStyle: state.animStyle,
+          hand: state.hand,
+          zigzag: state.zigzag,
+          
+          // Drawing settings
+          outlineDetect: state.outlineDetect,
+          outlineAlgorithm: state.outlineAlgorithm,
+          outlineStrokeStyle: state.outlineStrokeStyle,
+          colorStyle: state.colorStyle
+        };
+        
+        // Update project data
+        project.modifiedAt = new Date().toISOString();
+        project.state = savedState;
+        
+        objectStore.put(project);
+
+        // Check storage usage after each save (async, non-blocking)
+        checkStorageUsage();
+
+        // Show save indicator with time
+        showSaveIndicator();
+      }
+    };
   } catch (err) {
     console.error('Save failed:', err);
     showToast('⚠️ Save failed — storage may be full or unavailable', null, 4000);
@@ -4878,261 +5123,233 @@ function loadProject(projectId) {
   if (!db) return;
   
   try {
-  const transaction = db.transaction(['projects'], 'readonly');
-  const objectStore = transaction.objectStore('projects');
-  const request = objectStore.get(projectId);
-  
-  request.onsuccess = () => {
-    const project = request.result;
-    if (project && project.state) {
-      currentProjectId = projectId;
-      
-      const savedState = project.state;
-      
-      // CRITICAL: Clear everything first to avoid collisions
-      state.layers = [];
-      state.selectedLayerId = null;
-      state.groups = [];
-      state.animRunning = false;
-      
-      // Clear canvases
-      if (typeof ctx !== 'undefined') {
-        ctx.clearRect(0, 0, state.canvasW, state.canvasH);
-      }
-      if (typeof hctx !== 'undefined') {
-        hctx.clearRect(0, 0, state.canvasW, state.canvasH);
-      }
-      
-      // Restore canvas settings
-      state.canvasW = savedState.canvasW || 1280;
-      state.canvasH = savedState.canvasH || 720;
-      state.canvasBg = savedState.canvasBg || { type: 'solid', val: '#ffffff' };
-      
-      // Restore animation and drawing settings
-      state.animStyle = savedState.animStyle || 'chunkjump';
-      state.hand = savedState.hand || 'custom1';
-      state.zigzag = savedState.zigzag !== undefined ? savedState.zigzag : true;
-      state.outlineDetect = savedState.outlineDetect !== undefined ? savedState.outlineDetect : 50;
-      state.outlineAlgorithm = savedState.outlineAlgorithm || 'classic';
-      state.outlineStrokeStyle = savedState.outlineStrokeStyle || 'default';
-      state.colorStyle = savedState.colorStyle || 'filled';
-      
-      state.groups = savedState.groups || [];
-      
-      // Initialize canvas with restored size
-      initCanvas(state.canvasW, state.canvasH);
-      
-      // Restore background and update UI
-      if (state.canvasBg && state.canvasBg.type) {
-        const bgType = state.canvasBg.type;
-        const bgVal = state.canvasBg.val;
+    const transaction = db.transaction(['projects'], 'readonly');
+    const objectStore = transaction.objectStore('projects');
+    const request = objectStore.get(projectId);
+    
+    request.onsuccess = async () => {
+      const project = request.result;
+      if (project && project.state) {
+        currentProjectId = projectId;
         
-        // Update UI to reflect background
-        document.querySelectorAll('.bg-pill, .bg-preset').forEach(el => {
-          el.classList.remove('active');
-        });
+        const savedState = project.state;
         
-        if (bgType === 'solid') {
-          if (bgVal === '#ffffff' || bgVal === 'white') {
-            const whitePill = document.querySelector('.bg-pill[onclick*="white"]');
-            if (whitePill) whitePill.classList.add('active');
-          } else if (bgVal === 'transparent') {
-            const transPill = document.querySelector('.bg-pill[onclick*="transparent"]');
-            if (transPill) transPill.classList.add('active');
-          }
-          // Apply the background
-          selectBgPreset(null, 'solid', bgVal);
-        } else if (bgType === 'gradient') {
-          const gradPill = document.querySelector(`.bg-preset[onclick*="'${bgVal}'"]`);
-          if (gradPill) {
-            gradPill.classList.add('active');
-            selectBgPreset(gradPill, 'gradient', bgVal);
-          }
+        // CRITICAL: Clear everything first to avoid collisions
+        state.layers = [];
+        state.selectedLayerId = null;
+        state.groups = [];
+        state.animRunning = false;
+        
+        // Clear canvases
+        if (typeof ctx !== 'undefined') {
+          ctx.clearRect(0, 0, state.canvasW, state.canvasH);
         }
-      }
-      
-      // Clear layer list UI
-      const layerListEl = document.getElementById('layer-list');
-      if (layerListEl) layerListEl.innerHTML = '';
-      
-      // Restore layers with images
-      state.layers = [];
-      if (savedState.layers && savedState.layers.length > 0) {
-        // CRITICAL: Set the layer ID counter BEFORE loading to avoid conflicts when adding new layers
-        const maxId = Math.max(...savedState.layers.map(l => l.id));
-        if (maxId >= window._layerIdCounter) {
-          window._layerIdCounter = maxId;
+        if (typeof hctx !== 'undefined') {
+          hctx.clearRect(0, 0, state.canvasW, state.canvasH);
         }
         
-        let loadedCount = 0;
-        const totalLayers = savedState.layers.length;
+        // Restore canvas settings
+        state.canvasW = savedState.canvasW || 1280;
+        state.canvasH = savedState.canvasH || 720;
+        state.canvasBg = savedState.canvasBg || { type: 'solid', val: '#ffffff' };
         
-        savedState.layers.forEach((layerData, index) => {
-          if (layerData.imageDataURL) {
-            const img = new Image();
-            img.onload = () => {
-              const layer = {
-                id: layerData.id,
-                name: layerData.name,
-                _savedIndex: layerData.savedIndex ?? index, // for post-load sort
-                img: img,
-                x: layerData.x,
-                y: layerData.y,
-                w: layerData.w,
-                h: layerData.h,
-                baseW: layerData.baseW !== undefined ? layerData.baseW : layerData.w,
-                baseH: layerData.baseH !== undefined ? layerData.baseH : layerData.h,
-                resizePct: layerData.resizePct !== undefined ? layerData.resizePct : 100,
-                animStyle: layerData.animStyle || 'scanner',
-                hand: layerData.hand || 'custom1',
-                animOrder: layerData.animOrder !== undefined ? layerData.animOrder : null,
-                opacity: layerData.opacity !== undefined ? layerData.opacity : 1,
-                visible: layerData.visible !== undefined ? layerData.visible : true,
-                groupId: layerData.groupId || null,
-                speed: layerData.speed !== undefined ? layerData.speed : 40,
-                handSpeed: layerData.handSpeed !== undefined ? layerData.handSpeed : 6,
-                chunks: layerData.chunks !== undefined ? layerData.chunks : 30,
-                specChunks: layerData.specChunks !== undefined ? layerData.specChunks : 35,
-                hasPngAlpha: layerData.hasPngAlpha || false,
-                outlineDetect: layerData.outlineDetect,
-                outlineAlgorithm: layerData.outlineAlgorithm,
-                outlineStrokeStyle: layerData.outlineStrokeStyle,
-                colorStyle: layerData.colorStyle,
-                outlineColor: layerData.outlineColor,
-                outlineThickness: layerData.outlineThickness,
-                textAnimDir: layerData.textAnimDir,
-                textDrawStyle: layerData.textDrawStyle,
-                moveDirection: layerData.moveDirection || 'left',
-                moveEasing: layerData.moveEasing || 'ease-out',
-                moveHand: layerData.moveHand !== undefined ? layerData.moveHand : true,
-                // Text layer properties
-                kind: layerData.kind || null,
-                textProps: layerData.textProps || null,
-              };
-              
-              state.layers.push(layer);
-              loadedCount++;
-              
-              if (loadedCount === totalLayers) {
-                // All layers loaded - restore visual stack order (savedIndex = position in state.layers at save time)
-                state.layers.sort((a, b) => (a._savedIndex ?? 0) - (b._savedIndex ?? 0));
-                // Clean up temp sort key
-                state.layers.forEach(l => delete l._savedIndex);
-                renderLayerList();
-                redrawLayersOnCanvas();
-                
-                // Select the saved layer or first layer
-                if (savedState.selectedLayerId) {
-                  selectLayer(savedState.selectedLayerId);
-                } else if (state.layers.length > 0) {
-                  selectLayer(state.layers[0].id);
-                }
-              }
-            };
-            img.onerror = () => {
-              console.error('Failed to load layer image');
-              loadedCount++;
-              if (loadedCount === totalLayers) {
-                renderLayerList();
-                redrawLayersOnCanvas();
-              }
-            };
-            img.src = layerData.imageDataURL;
-          } else {
-            loadedCount++;
-            if (loadedCount === totalLayers) {
-              renderLayerList();
-              redrawLayersOnCanvas();
+        // Restore animation and drawing settings
+        state.animStyle = savedState.animStyle || 'chunkjump';
+        state.hand = savedState.hand || 'custom1';
+        state.zigzag = savedState.zigzag !== undefined ? savedState.zigzag : true;
+        state.outlineDetect = savedState.outlineDetect !== undefined ? savedState.outlineDetect : 50;
+        state.outlineAlgorithm = savedState.outlineAlgorithm || 'classic';
+        state.outlineStrokeStyle = savedState.outlineStrokeStyle || 'default';
+        state.colorStyle = savedState.colorStyle || 'filled';
+        
+        state.groups = savedState.groups || [];
+        
+        // Initialize canvas with restored size
+        initCanvas(state.canvasW, state.canvasH);
+        
+        // Restore background and update UI
+        if (state.canvasBg && state.canvasBg.type) {
+          const bgType = state.canvasBg.type;
+          const bgVal = state.canvasBg.val;
+          
+          document.querySelectorAll('.bg-pill, .bg-preset').forEach(el => {
+            el.classList.remove('active');
+          });
+          
+          if (bgType === 'solid') {
+            if (bgVal === '#ffffff' || bgVal === 'white') {
+              const whitePill = document.querySelector('.bg-pill[onclick*="white"]');
+              if (whitePill) whitePill.classList.add('active');
+            } else if (bgVal === 'transparent') {
+              const transPill = document.querySelector('.bg-pill[onclick*="transparent"]');
+              if (transPill) transPill.classList.add('active');
+            }
+            selectBgPreset(null, 'solid', bgVal);
+          } else if (bgType === 'gradient') {
+            const gradPill = document.querySelector(`.bg-preset[onclick*="'${bgVal}'"]`);
+            if (gradPill) {
+              gradPill.classList.add('active');
+              selectBgPreset(gradPill, 'gradient', bgVal);
             }
           }
+        }
+        
+        // Clear layer list UI
+        const layerListEl = document.getElementById('layer-list');
+        if (layerListEl) layerListEl.innerHTML = '';
+        
+        // RESTORE MULTI-SLIDE STATE
+        let rawSlides = savedState.slides;
+        // Backward compatibility: If no slides array exists, wrap legacy savedState.layers into a slide
+        if (!Array.isArray(rawSlides) || rawSlides.length === 0) {
+          rawSlides = [{
+            id: 1,
+            name: 'Slide 1',
+            canvasBg: savedState.canvasBg || { type: 'solid', val: '#ffffff' },
+            transition: 'eraser',
+            layers: savedState.layers || []
+          }];
+        }
+
+        // Restore slide ID counter
+        let maxSlideId = 1;
+        rawSlides.forEach(s => {
+          if (s.id && s.id > maxSlideId) maxSlideId = s.id;
         });
-      } else {
-        // No layers - clear layer list
+        state._slideIdCounter = Math.max(savedState._slideIdCounter || 1, maxSlideId);
+
+        // Restore layer ID counter across all slides
+        let maxLayerId = 0;
+        rawSlides.forEach(s => {
+          (s.layers || []).forEach(l => {
+            if (l && l.id && l.id > maxLayerId) maxLayerId = l.id;
+          });
+        });
+        if (maxLayerId >= (window._layerIdCounter || 0)) {
+          window._layerIdCounter = maxLayerId;
+        }
+
+        // Hydrate all slides and their images asynchronously
+        const restoredSlides = [];
+        for (let i = 0; i < rawSlides.length; i++) {
+          const s = rawSlides[i];
+          const hydratedLayers = await deserializeLayers(s.layers);
+          restoredSlides.push({
+            id: s.id || (i + 1),
+            name: s.name || ('Slide ' + (i + 1)),
+            canvasBg: s.canvasBg ? JSON.parse(JSON.stringify(s.canvasBg)) : { type: 'solid', val: 'white' },
+            transition: s.transition || 'eraser',
+            layers: hydratedLayers
+          });
+        }
+        state.slides = restoredSlides;
+
+        // Restore active slide index
+        let activeIdx = (typeof savedState.currentSlideIndex === 'number') ? savedState.currentSlideIndex : 0;
+        if (activeIdx < 0 || activeIdx >= state.slides.length) activeIdx = 0;
+        state.currentSlideIndex = activeIdx;
+
+        // Bind active slide layers & background to state
+        const curSlide = state.slides[activeIdx];
+        state.layers = curSlide.layers ? [...curSlide.layers] : [];
+        state.canvasBg = curSlide.canvasBg ? JSON.parse(JSON.stringify(curSlide.canvasBg)) : { type: 'solid', val: 'white' };
+        
+        // Select saved layer or first layer
+        if (savedState.selectedLayerId && state.layers.some(l => l.id === savedState.selectedLayerId)) {
+          state.selectedLayerId = savedState.selectedLayerId;
+        } else if (state.layers.length > 0) {
+          state.selectedLayerId = state.layers[0].id;
+        } else {
+          state.selectedLayerId = null;
+        }
+
+        // Render UI
         renderLayerList();
         redrawLayersOnCanvas();
-      }
-      
-      // Update project name display
-      updateProjectNameDisplay(project.name);
-      
-      // Update topbar displays
-      const sizeDisplay = document.getElementById('topbar-size-display');
-      if (sizeDisplay) {
-        sizeDisplay.textContent = `${state.canvasW} × ${state.canvasH}`;
-      }
-      
-      const canvasSizeDisplay = document.getElementById('canvas-size-display');
-      if (canvasSizeDisplay) {
-        canvasSizeDisplay.textContent = `${state.canvasW} × ${state.canvasH}`;
-      }
-      
-      // Sync canvas size buttons
-      // Restore saved resolution and aspect ratio (or use defaults)
-      _currentRatio = savedState._currentRatio || '16:9';
-      _currentRes = savedState._currentRes || 720;
-      
-      // Sync ALL button groups for ratio
-      const ratioBtn = document.querySelector(`.ratio-btn[data-ratio="${_currentRatio}"]`);
-      if (ratioBtn) {
-        document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
-        ratioBtn.classList.add('active');
-      }
-      document.querySelectorAll('.bb-ratio-btn').forEach(b => 
-        b.classList.toggle('active', b.dataset.ratio === _currentRatio)
-      );
-      
-      // Sync ALL button groups for resolution
-      const resBtn = document.querySelector(`.res-btn[data-res="${_currentRes}"]`);
-      if (resBtn) {
-        document.querySelectorAll('.res-btn').forEach(b => b.classList.remove('active'));
-        resBtn.classList.add('active');
-      }
-      document.querySelectorAll('.bb-res-btn').forEach(b => 
-        b.classList.toggle('active', b.dataset.res === String(_currentRes))
-      );
-      
-      // Update size readouts
-      const sizeText = `${state.canvasW} × ${state.canvasH}`;
-      const sizeReadout = document.getElementById('size-readout');
-      if (sizeReadout) sizeReadout.textContent = sizeText;
-      const bbSizeReadout = document.getElementById('bb-size-readout');
-      if (bbSizeReadout) bbSizeReadout.textContent = sizeText;
-      
-      // Sync UI to reflect loaded animation style
-      const animOpt = document.querySelector(`.anim-opt[data-anim="${state.animStyle}"]`);
-      if (animOpt) {
-        document.querySelectorAll('.anim-opt').forEach(opt => opt.classList.remove('selected'));
-        animOpt.classList.add('selected');
-      }
-      
-      // Sync hand selection
-      const handOpt = document.querySelector(`.hand-opt[data-hand="${state.hand}"]`);
-      if (handOpt) {
-        document.querySelectorAll('.hand-opt').forEach(opt => opt.classList.remove('selected'));
-        handOpt.classList.add('selected');
-      }
-      
-      // Sync zigzag toggle
-      const zigzagToggle = document.getElementById('zigzag-toggle');
-      if (zigzagToggle) {
-        if (state.zigzag) {
-          zigzagToggle.classList.add('on');
-          zigzagToggle.classList.remove('off');
-        } else {
-          zigzagToggle.classList.remove('on');
-          zigzagToggle.classList.add('off');
+        if (state.selectedLayerId) selectLayer(state.selectedLayerId);
+        
+        // Render slide tabs and sync transition selector
+        renderSlideTabs();
+        syncTransitionDropdown();
+        
+        // Update project name display
+        updateProjectNameDisplay(project.name);
+        
+        // Update topbar displays
+        const sizeDisplay = document.getElementById('topbar-size-display');
+        if (sizeDisplay) {
+          sizeDisplay.textContent = `${state.canvasW} × ${state.canvasH}`;
         }
-      }
-      
-      closeProjectsModal();
-      
-      // Update last save time
-      updateLastSaveTime(project.modifiedAt);
+        
+        const canvasSizeDisplay = document.getElementById('canvas-size-display');
+        if (canvasSizeDisplay) {
+          canvasSizeDisplay.textContent = `${state.canvasW} × ${state.canvasH}`;
+        }
+        
+        // Sync canvas size buttons
+        _currentRatio = savedState._currentRatio || '16:9';
+        _currentRes = savedState._currentRes || 720;
+        
+        const ratioBtn = document.querySelector(`.ratio-btn[data-ratio="${_currentRatio}"]`);
+        if (ratioBtn) {
+          document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+          ratioBtn.classList.add('active');
+        }
+        document.querySelectorAll('.bb-ratio-btn').forEach(b => 
+          b.classList.toggle('active', b.dataset.ratio === _currentRatio)
+        );
+        
+        const resBtn = document.querySelector(`.res-btn[data-res="${_currentRes}"]`);
+        if (resBtn) {
+          document.querySelectorAll('.res-btn').forEach(b => b.classList.remove('active'));
+          resBtn.classList.add('active');
+        }
+        document.querySelectorAll('.bb-res-btn').forEach(b => 
+          b.classList.toggle('active', b.dataset.res === String(_currentRes))
+        );
+        
+        // Update size readouts
+        const sizeText = `${state.canvasW} × ${state.canvasH}`;
+        const sizeReadout = document.getElementById('size-readout');
+        if (sizeReadout) sizeReadout.textContent = sizeText;
+        const bbSizeReadout = document.getElementById('bb-size-readout');
+        if (bbSizeReadout) bbSizeReadout.textContent = sizeText;
+        
+        // Sync UI to reflect loaded animation style
+        const animOpt = document.querySelector(`.anim-opt[data-anim="${state.animStyle}"]`);
+        if (animOpt) {
+          document.querySelectorAll('.anim-opt').forEach(opt => opt.classList.remove('selected'));
+          animOpt.classList.add('selected');
+        }
+        
+        // Sync hand selection
+        const handOpt = document.querySelector(`.hand-opt[data-hand="${state.hand}"]`);
+        if (handOpt) {
+          document.querySelectorAll('.hand-opt').forEach(opt => opt.classList.remove('selected'));
+          handOpt.classList.add('selected');
+        }
+        
+        // Sync zigzag toggle
+        const zigzagToggle = document.getElementById('zigzag-toggle');
+        if (zigzagToggle) {
+          if (state.zigzag) {
+            zigzagToggle.classList.add('on');
+            zigzagToggle.classList.remove('off');
+          } else {
+            zigzagToggle.classList.remove('on');
+            zigzagToggle.classList.add('off');
+          }
+        }
+        
+        closeProjectsModal();
+        
+        // Update last save time
+        updateLastSaveTime(project.modifiedAt);
 
-      // Clear undo/redo history — no cross-project history
-      clearUndoHistory();
-    }
-  };
+        // Clear undo/redo history — no cross-project history
+        clearUndoHistory();
+      }
+    };
   } catch (err) {
     console.error('Load failed:', err);
     showToast('⚠️ Could not load project — storage may be unavailable', null, 4000);
@@ -5159,7 +5376,12 @@ async function createNewProject() {
     outlineDetect: 50,
     outlineAlgorithm: 'classic',
     outlineStrokeStyle: 'default',
-    colorStyle: 'filled'
+    colorStyle: 'filled',
+    slides: [
+      { id: 1, name: 'Slide 1', layers: [], canvasBg: { type: 'solid', val: '#ffffff' }, transition: 'eraser' }
+    ],
+    currentSlideIndex: 0,
+    _slideIdCounter: 1
   };
   
   const project = {
@@ -5390,8 +5612,18 @@ function scheduleAutoSave() {
   if (autoSaveTimer) clearTimeout(autoSaveTimer);
   autoSaveTimer = setTimeout(() => {
     saveProject();
-  }, 5000); // Save 5 seconds after last change
+  }, 1500); // Debounced save 1.5s after change
 }
+
+// Flush pending auto-save immediately before page refresh or unload
+window.addEventListener('beforeunload', () => {
+  if (autoSaveTimer) {
+    clearTimeout(autoSaveTimer);
+  }
+  if (typeof saveProject === 'function') {
+    saveProject();
+  }
+});
 
 // ═══════════════════════════════════════════════════════════════════════════
 // UNDO / REDO ENGINE
@@ -6082,6 +6314,9 @@ window.addEventListener('load', () => {
 ════════════════════════════════════════════════════════════════════════ -->
 <script src="animations.js"></script>
 <script src="doodles.js"></script>
+<script src="assets.js"></script>
+<script src="env.js" onerror="void 0;"></script>
+<script src="aiSlideGenerator.js"></script>
 
 <script>
 // ─── POLYFILL ───
@@ -6142,6 +6377,7 @@ const state = {
   // ─── HAND MOVEMENT STYLE (global user preference, not saved per-project) ───
   handGlideEnabled: true,
 };
+window.state = state;
 
 // ─── CANVAS SETUP ───
 const canvas   = document.getElementById('main-canvas');
@@ -6404,6 +6640,7 @@ function loadSlide(idx, isPlayback = false) {
   state.currentSlideIndex = idx;
   const target = state.slides[idx];
   state.layers = target.layers ? [...target.layers] : [];
+  if (typeof sanitizeLayerIds === 'function') sanitizeLayerIds(state.layers);
   state.canvasBg = target.canvasBg ? JSON.parse(JSON.stringify(target.canvasBg)) : { type:'solid', val:'white' };
   state.selectedLayerId = state.layers.length > 0 ? state.layers[state.layers.length - 1].id : null;
 
@@ -6429,6 +6666,7 @@ function addNewSlide() {
   };
   state.slides.push(newSlide);
   loadSlide(state.slides.length - 1);
+  scheduleAutoSave();
   showToast('New slide created');
 }
 
@@ -6438,7 +6676,12 @@ function duplicateCurrentSlide() {
   const cur = state.slides[state.currentSlideIndex];
   const newId = ++state._slideIdCounter;
   // Deep clone layers
-  const clonedLayers = (cur.layers || []).map(l => ({ ...l, id: ++_layerIdCounter }));
+  const clonedLayers = (cur.layers || []).map(l => {
+    return {
+      ...l,
+      id: typeof getNextLayerId === 'function' ? getNextLayerId() : ((window._layerIdCounter || 0) + 1)
+    };
+  });
   const newSlide = {
     id: newId,
     name: (cur.name || 'Slide') + ' (Copy)',
@@ -6448,6 +6691,7 @@ function duplicateCurrentSlide() {
   };
   state.slides.splice(state.currentSlideIndex + 1, 0, newSlide);
   loadSlide(state.currentSlideIndex + 1);
+  scheduleAutoSave();
   showToast('Slide duplicated');
 }
 
@@ -6463,6 +6707,7 @@ function deleteSlide(idx, event) {
     state.currentSlideIndex = state.slides.length - 1;
   }
   loadSlide(state.currentSlideIndex);
+  scheduleAutoSave();
   showToast('Slide deleted');
 }
 
@@ -6665,7 +6910,53 @@ function playAllSlides() {
 // ─────────────────────────────────────────────
 // ── LAYER MANAGEMENT
 // ─────────────────────────────────────────────
-let _layerIdCounter = 0;
+window._layerIdCounter = window._layerIdCounter || 0;
+let _layerIdCounter = window._layerIdCounter;
+
+function getNextLayerId() {
+  let maxId = (typeof window._layerIdCounter === 'number' && !isNaN(window._layerIdCounter)) ? window._layerIdCounter : 0;
+  if (window.state && window.state.layers && Array.isArray(window.state.layers)) {
+    window.state.layers.forEach(l => {
+      const lid = Number(l?.id);
+      if (!isNaN(lid) && lid > maxId) maxId = lid;
+    });
+  }
+  if (window.state && window.state.slides && Array.isArray(window.state.slides)) {
+    window.state.slides.forEach(s => {
+      (s.layers || []).forEach(l => {
+        const lid = Number(l?.id);
+        if (!isNaN(lid) && lid > maxId) maxId = lid;
+      });
+    });
+  }
+  window._layerIdCounter = maxId + 1;
+  _layerIdCounter = window._layerIdCounter;
+  return window._layerIdCounter;
+}
+
+function sanitizeLayerIds(layers) {
+  if (!Array.isArray(layers)) return;
+  const seen = new Set();
+  layers.forEach(l => {
+    if (!l) return;
+    const numId = Number(l.id);
+    if (l.id === undefined || l.id === null || isNaN(numId) || l.id === 'NaN' || seen.has(numId)) {
+      l.id = getNextLayerId();
+    } else {
+      l.id = numId;
+    }
+    seen.add(l.id);
+    if (typeof isTextLayer === 'function' && isTextLayer(l)) {
+      l.kind = 'text';
+      if (!l._textContent || typeof l._textContent !== 'string') {
+        l._textContent = typeof getTextLayerString === 'function' ? getTextLayerString(l) : (l.name || 'Text');
+      }
+      if (!l._textColor) {
+        l._textColor = l.textProps?.color || '#1e293b';
+      }
+    }
+  });
+}
 
 function addLayer(img, name, posX, posY) {
   // If an animation had completed or was running, clean up animation state so the canvas is in clean editing mode
@@ -6690,7 +6981,7 @@ function addLayer(img, name, posX, posY) {
   }
 
   pushUndoSnapshot();
-  const id = ++_layerIdCounter;
+  const id = getNextLayerId();
   // Default size: fit within canvas keeping aspect ratio, at 80% of canvas
   const naturalW = img.naturalWidth || img.width || 256;
   const naturalH = img.naturalHeight || img.height || 256;
@@ -6721,7 +7012,7 @@ function addLayer(img, name, posX, posY) {
     baseW: w,
     baseH: h,
     resizePct: 100,
-    animStyle: state.animStyle || 'scanner',  // inherit current global style, never null
+    animStyle: (state.animStyle === 'spec-text' ? 'illustfill' : (state.animStyle || 'scanner')),
     hand: state.hand || 'custom1',
     animOrder: null,  // null = follow visual stack order (state.layers index); user can set manually
     opacity: 1,
@@ -6735,6 +7026,7 @@ function addLayer(img, name, posX, posY) {
     moveDirection: state.moveDirection || 'left',
     moveEasing: state.moveEasing || 'ease-out',
     moveHand: state.moveHand !== false,
+    kind: 'image',
   };
   state.layers.push(layer);
 
@@ -6782,6 +7074,7 @@ function removeLayer(id) {
 }
 
 function selectLayer(id) {
+  if (typeof deactivateTextPlacement === 'function') deactivateTextPlacement();
   state.selectedLayerId = id;
   renderLayerList();
   drawSelectionHandles();
@@ -6875,7 +7168,17 @@ function syncSidebarToLayer(id) {
   });
 }
 
-function getLayerById(id) { return state.layers.find(l=>l.id===id); }
+function getLayerById(id) {
+  if (id === undefined || id === null) return null;
+  const numId = Number(id);
+  const fromState = state.layers.find(l => l && (l.id === id || String(l.id) === String(id) || (!isNaN(numId) && Number(l.id) === numId)));
+  if (fromState) return fromState;
+  const curSlide = state.slides?.[state.currentSlideIndex];
+  if (curSlide && Array.isArray(curSlide.layers)) {
+    return curSlide.layers.find(l => l && (l.id === id || String(l.id) === String(id) || (!isNaN(numId) && Number(l.id) === numId)));
+  }
+  return null;
+}
 function getSelectedLayer() { return getLayerById(state.selectedLayerId); }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -7241,6 +7544,8 @@ function renderLayerList() {
   count.textContent = `${state.layers.length} layer${state.layers.length!==1?'s':''}`;
   empty.style.display = state.layers.length ? 'none' : 'block';
 
+  if (typeof sanitizeLayerIds === 'function') sanitizeLayerIds(state.layers);
+
   const reversed = [...state.layers].reverse();
   list.innerHTML = '';
 
@@ -7291,6 +7596,259 @@ function renderLayerList() {
   refreshLayerSliderVisuals(list);
 }
 
+function isTextLayer(layer) {
+  if (!layer) return false;
+  // 1. Explicit asset / vector / doodle / raster image is NEVER a text layer
+  if (layer.kind === 'asset' || layer.kind === 'image' || layer.kind === 'doodle' || layer.kind === 'svg') {
+    return false;
+  }
+  // 2. Explicit text layer
+  if (layer.kind === 'text') return true;
+  // 3. Animation style is spec-text
+  if (layer.animStyle === 'spec-text') return true;
+  // 4. Has explicit text content or text props (only if not an image/asset)
+  if (typeof layer._textContent === 'string' && layer._textContent.trim().length > 0) return true;
+  if (layer.textProps && typeof layer.textProps.text === 'string' && layer.textProps.text.trim().length > 0) return true;
+  return false;
+}
+
+function getTextLayerString(layer) {
+  if (!layer) return '';
+  if (typeof layer._textContent === 'string' && layer._textContent.length > 0) {
+    return layer._textContent;
+  }
+  if (layer.textProps && typeof layer.textProps.text === 'string' && layer.textProps.text.length > 0) {
+    return layer.textProps.text;
+  }
+  if (typeof layer.name === 'string' && layer.name.length > 0 && !layer.name.startsWith('Layer ')) {
+    return layer.name;
+  }
+  return layer.name || 'Text';
+}
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function toStandardHex(col) {
+  if (!col || typeof col !== 'string') return '#1e293b';
+  let c = col.trim();
+  if (!c.startsWith('#')) c = '#' + c;
+  if (/^#[0-9a-fA-F]{3}$/.test(c)) {
+    return '#' + c[1] + c[1] + c[2] + c[2] + c[3] + c[3];
+  }
+  if (/^#[0-9a-fA-F]{6}$/.test(c)) {
+    return c;
+  }
+  return '#1e293b';
+}
+
+function updateTextLayerContent(id, text) {
+  const layer = getLayerById(id);
+  if (!layer) return;
+  layer._textContent = text;
+  if (!layer.kind) layer.kind = 'text';
+  if (layer.textProps) layer.textProps.text = text;
+
+  // Update layer name in layer model & in DOM header
+  const title = (text.trim().split('\n')[0] || '').slice(0, 24) || 'Text';
+  layer.name = title;
+  const itemEl = document.querySelector(`.layer-item[data-id="${id}"]`);
+  if (itemEl) {
+    const nameEl = itemEl.querySelector('.layer-name');
+    if (nameEl) {
+      nameEl.textContent = title;
+      nameEl.title = title;
+    }
+  }
+
+  _rerenderTextLayer(layer, itemEl);
+}
+
+function updateTextLayerColor(id, color, sourceEl) {
+  const layer = getLayerById(id);
+  if (!layer) return;
+  if (!color) return;
+
+  let formatted = String(color).trim();
+  if (/^[0-9a-fA-F]{3}$/.test(formatted) || /^[0-9a-fA-F]{6}$/.test(formatted)) {
+    formatted = '#' + formatted;
+  }
+  layer._textColor = formatted;
+  if (!layer.kind) layer.kind = 'text';
+  if (layer.textProps) layer.textProps.color = formatted;
+
+  const itemEl = document.querySelector(`.layer-item[data-id="${id}"]`);
+  if (itemEl) {
+    const colorInput = itemEl.querySelector('.layer-color-picker');
+    const hexInput = itemEl.querySelector('.layer-color-hex');
+    const swatchBox = itemEl.querySelector('.layer-color-swatch-box');
+    const stdHex = toStandardHex(formatted);
+    if (colorInput && colorInput !== sourceEl) {
+      colorInput.value = stdHex;
+    }
+    if (hexInput && hexInput !== sourceEl) {
+      hexInput.value = formatted;
+    }
+    if (swatchBox) {
+      swatchBox.style.background = formatted;
+    }
+  }
+
+  _rerenderTextLayer(layer, itemEl);
+}
+
+function _rerenderTextLayer(layer, itemEl) {
+  const font = layer._textFont || (layer.textProps && layer.textProps.font) || 'Caveat';
+  const size = layer._textSize || (layer.textProps && layer.textProps.size) || 52;
+  const bold = !!(layer._textBold || (layer.textProps && layer.textProps.bold));
+  const italic = !!(layer._textItalic || (layer.textProps && layer.textProps.italic));
+  const color = layer._textColor || (layer.textProps && layer.textProps.color) || '#1e293b';
+  const align = layer._textAlign || (layer.textProps && layer.textProps.align) || 'left';
+  const lh = layer._textLineHeight || (layer.textProps && layer.textProps.lineHeight) || 1.3;
+  const sp = layer._textSpacing || (layer.textProps && layer.textProps.spacing) || 0;
+  const text = layer._textContent !== undefined ? String(layer._textContent) : (layer.name || '');
+  const lines = text.split('\n');
+
+  // Cache normalized props on layer
+  layer._textFont = font;
+  layer._textSize = size;
+  layer._textBold = bold;
+  layer._textItalic = italic;
+  layer._textColor = color;
+  layer._textAlign = align;
+  layer._textLineHeight = lh;
+  layer._textSpacing = sp;
+
+  const probe = document.createElement('canvas');
+  probe.width = state.canvasW || 1280;
+  probe.height = 4;
+  const pctx = probe.getContext('2d');
+  const fontStr = `${italic ? 'italic ' : ''}${bold ? 'bold ' : ''}${size}px '${font}', sans-serif`;
+  pctx.font = fontStr;
+  pctx.letterSpacing = sp + 'px';
+
+  let widest = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const w = pctx.measureText(lines[i]).width;
+    if (w > widest) widest = w;
+  }
+  const maxW = Math.max(20, Math.min(state.canvasW || 1280, widest + size * 0.4));
+  const lineH = size * lh;
+  const totalH = Math.max(20, lines.length * lineH + size * 0.3);
+
+  const tc = document.createElement('canvas');
+  tc.width = Math.max(10, Math.ceil(maxW));
+  tc.height = Math.max(10, Math.ceil(totalH));
+  const tctx = tc.getContext('2d');
+  tctx.font = fontStr;
+  tctx.letterSpacing = sp + 'px';
+  tctx.fillStyle = color;
+  tctx.textBaseline = 'top';
+  tctx.textAlign = align === 'center' ? 'center' : align === 'right' ? 'right' : 'left';
+  const tx = align === 'center' ? tc.width / 2 : align === 'right' ? tc.width : 0;
+  lines.forEach((ln, i) => tctx.fillText(ln, tx, i * lineH + size * 0.1));
+
+  layer._canvas = tc;
+  const currentScale = (layer.resizePct ?? 100) / 100;
+  layer.baseW = Math.ceil(maxW);
+  layer.baseH = Math.ceil(totalH);
+  layer.w = Math.max(20, Math.round(layer.baseW * currentScale));
+  layer.h = Math.max(20, Math.round(layer.baseH * currentScale));
+
+  if (itemEl) {
+    const wInp = itemEl.querySelector('input[onchange*="\'w\'"]');
+    if (wInp) wInp.value = Math.round(layer.w);
+    const hInp = itemEl.querySelector('input[onchange*="\'h\'"]');
+    if (hInp) hInp.value = Math.round(layer.h);
+  }
+
+  if (!layer.img) {
+    layer.img = new Image();
+  }
+  const dataUrl = tc.toDataURL();
+  layer.img.onload = () => {
+    redrawLayersOnCanvas();
+    drawSelectionHandles();
+  };
+  layer.img.src = dataUrl;
+
+  if (itemEl) {
+    const thumb = itemEl.querySelector('.layer-thumb');
+    if (thumb) thumb.src = dataUrl;
+  }
+
+  redrawLayersOnCanvas();
+  drawSelectionHandles();
+  if (typeof saveCurrentSlide === 'function') saveCurrentSlide();
+  scheduleAutoSave();
+}
+
+function updateTextLayerFont(id, font) {
+  const layer = getLayerById(id);
+  if (!layer) return;
+  layer._textFont = font;
+  if (layer.textProps) layer.textProps.font = font;
+  const itemEl = document.querySelector(`.layer-item[data-id="${id}"]`);
+  _rerenderTextLayer(layer, itemEl);
+}
+
+function updateTextLayerFontSize(id, size) {
+  const layer = getLayerById(id);
+  if (!layer) return;
+  const sz = Math.max(12, Math.min(200, parseInt(size) || 52));
+  layer._textSize = sz;
+  if (layer.textProps) layer.textProps.size = sz;
+  const itemEl = document.querySelector(`.layer-item[data-id="${id}"]`);
+  if (itemEl) {
+    const valEl = itemEl.querySelector('.font-size-val');
+    if (valEl) valEl.textContent = sz + 'px';
+  }
+  _rerenderTextLayer(layer, itemEl);
+}
+
+function toggleTextLayerStyle(id, styleProp) {
+  const layer = getLayerById(id);
+  if (!layer) return;
+  if (styleProp === 'bold') {
+    layer._textBold = !layer._textBold;
+    if (layer.textProps) layer.textProps.bold = layer._textBold;
+  } else if (styleProp === 'italic') {
+    layer._textItalic = !layer._textItalic;
+    if (layer.textProps) layer.textProps.italic = layer._textItalic;
+  }
+  const itemEl = document.querySelector(`.layer-item[data-id="${id}"]`);
+  if (itemEl) {
+    const isBold = !!(layer._textBold || layer.textProps?.bold);
+    const isItalic = !!(layer._textItalic || layer.textProps?.italic);
+    const boldBtn = itemEl.querySelector('.style-btn-bold');
+    if (boldBtn) {
+      boldBtn.style.background = isBold ? 'var(--accent)' : 'var(--panel)';
+      boldBtn.style.color = isBold ? '#fff' : 'var(--text)';
+      boldBtn.style.borderColor = isBold ? 'var(--accent)' : 'var(--border-hi)';
+    }
+    const italicBtn = itemEl.querySelector('.style-btn-italic');
+    if (italicBtn) {
+      italicBtn.style.background = isItalic ? 'var(--accent)' : 'var(--panel)';
+      italicBtn.style.color = isItalic ? '#fff' : 'var(--text)';
+      italicBtn.style.borderColor = isItalic ? 'var(--accent)' : 'var(--border-hi)';
+    }
+  }
+  _rerenderTextLayer(layer, itemEl);
+}
+
+window.updateTextLayerContent = updateTextLayerContent;
+window.updateTextLayerColor = updateTextLayerColor;
+window.updateTextLayerFont = updateTextLayerFont;
+window.updateTextLayerFontSize = updateTextLayerFontSize;
+window.toggleTextLayerStyle = toggleTextLayerStyle;
+
 function _buildLayerItem(layer) {
   ensureLayerResizeState(layer);
   const isSelected = layer.id === state.selectedLayerId;
@@ -7299,6 +7857,17 @@ function _buildLayerItem(layer) {
   const resizePct  = Math.round(layer.resizePct ?? 100);
   const order      = layer.animOrder !== null ? layer.animOrder : '';
   const isHidden   = layer.visible === false;
+  const isText     = isTextLayer(layer);
+  const textContent = isText ? getTextLayerString(layer) : '';
+  if (isText && (!layer._textContent || typeof layer._textContent !== 'string')) {
+    layer._textContent = textContent;
+  }
+  const textColor  = isText ? (layer._textColor || layer.textProps?.color || '#1e293b') : '#1e293b';
+  const textPresets = ['#1e293b', '#ffffff', '#2563eb', '#dc2626', '#16a34a', '#d97706', '#7c3aed'];
+  const textFont   = isText ? (layer._textFont || layer.textProps?.font || 'Caveat') : 'Caveat';
+  const textSize   = isText ? (layer._textSize || layer.textProps?.size || 52) : 52;
+  const isBold     = isText ? !!(layer._textBold || layer.textProps?.bold) : false;
+  const isItalic   = isText ? !!(layer._textItalic || layer.textProps?.italic) : false;
 
   const eyeIcon = isHidden
     ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
@@ -7325,6 +7894,76 @@ function _buildLayerItem(layer) {
       <button class="layer-del-btn" onclick="event.stopPropagation();removeLayer(${layer.id})" title="Remove layer">✕</button>
     </div>
     <div class="layer-settings${isSelected ? ' open' : ''}" id="ls-${layer.id}">
+      ${isText ? `
+      <div class="section-label" style="margin-top:2px">Text / Spelling</div>
+      <div style="margin-bottom:8px;">
+        <textarea class="layer-text-input" rows="2"
+          spellcheck="true"
+          autocomplete="on"
+          autocorrect="on"
+          autocapitalize="sentences"
+          placeholder="Edit text or spelling…"
+          style="width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--border-hi);border-radius:6px;color:var(--text);font-family:inherit;font-size:11px;line-height:1.4;padding:6px 8px;resize:vertical;outline:none;transition:border-color 0.15s;"
+          onclick="event.stopPropagation()"
+          onfocus="this.style.borderColor='var(--accent)'"
+          onblur="this.style.borderColor='var(--border-hi)'"
+          onchange="pushUndoSnapshot()"
+          oninput="event.stopPropagation();updateTextLayerContent(${layer.id}, this.value)">${escapeHtml(textContent)}</textarea>
+      </div>
+      <div class="section-label" style="margin-top:2px">Color</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+        <div class="layer-color-swatch-box" style="position:relative;width:24px;height:24px;border-radius:5px;border:1px solid var(--border-hi);background:${textColor};overflow:hidden;flex-shrink:0;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);" title="Pick color">
+          <input type="color" class="layer-color-picker" value="${toStandardHex(textColor)}"
+            style="position:absolute;inset:-8px;width:40px;height:40px;opacity:0;cursor:pointer;border:none;padding:0;"
+            onclick="event.stopPropagation()"
+            onchange="pushUndoSnapshot()"
+            oninput="event.stopPropagation();updateTextLayerColor(${layer.id}, this.value, this)">
+        </div>
+        <input type="text" class="layer-color-hex" value="${textColor}" maxlength="9" placeholder="#1e293b"
+          style="width:68px;padding:3px 6px;font-size:11px;font-family:monospace;background:var(--panel);border:1px solid var(--border-hi);border-radius:5px;color:var(--text);outline:none;"
+          onclick="event.stopPropagation()"
+          onchange="pushUndoSnapshot()"
+          oninput="event.stopPropagation();updateTextLayerColor(${layer.id}, this.value, this)">
+        <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
+          ${textPresets.map(c => `
+            <div class="layer-preset-swatch"
+              style="width:16px;height:16px;border-radius:50%;cursor:pointer;background:${c};border:1px solid ${c.toLowerCase() === '#ffffff' ? 'var(--border-hi)' : 'rgba(0,0,0,0.15)'};transition:transform 0.15s;flex-shrink:0;"
+              title="${c}"
+              onmouseover="this.style.transform='scale(1.2)'"
+              onmouseout="this.style.transform='scale(1)'"
+              onclick="event.stopPropagation();pushUndoSnapshot();updateTextLayerColor(${layer.id}, '${c}', this)"></div>
+          `).join('')}
+        </div>
+      </div>
+      <div class="section-label" style="margin-top:2px">Font &amp; Size</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+        <select style="flex:1;min-width:0;font-size:11px;padding:4px 6px;background:var(--panel);border:1px solid var(--border-hi);border-radius:6px;color:var(--text);font-family:inherit;outline:none;"
+          onclick="event.stopPropagation()"
+          onchange="event.stopPropagation();pushUndoSnapshot();updateTextLayerFont(${layer.id}, this.value)">
+          ${['Caveat', 'Patrick Hand', 'Permanent Marker', 'Nunito', 'DM Sans', 'Roboto', 'Merriweather', 'Space Mono'].map(f => `
+            <option value="${f}"${textFont === f ? ' selected' : ''}>${f}</option>
+          `).join('')}
+        </select>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <button type="button" class="style-btn-bold"
+            style="width:24px;height:24px;font-weight:bold;font-size:11px;border-radius:4px;border:1px solid ${isBold ? 'var(--accent)' : 'var(--border-hi)'};background:${isBold ? 'var(--accent)' : 'var(--panel)'};color:${isBold ? '#fff' : 'var(--text)'};cursor:pointer;"
+            title="Bold"
+            onclick="event.stopPropagation();pushUndoSnapshot();toggleTextLayerStyle(${layer.id}, 'bold')">B</button>
+          <button type="button" class="style-btn-italic"
+            style="width:24px;height:24px;font-style:italic;font-size:11px;border-radius:4px;border:1px solid ${isItalic ? 'var(--accent)' : 'var(--border-hi)'};background:${isItalic ? 'var(--accent)' : 'var(--panel)'};color:${isItalic ? '#fff' : 'var(--text)'};cursor:pointer;"
+            title="Italic"
+            onclick="event.stopPropagation();pushUndoSnapshot();toggleTextLayerStyle(${layer.id}, 'italic')">I</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+        <input type="range" min="16" max="160" value="${textSize}"
+          data-slider-fill
+          onclick="event.stopPropagation()"
+          oninput="event.stopPropagation();updateRangeFill(this);updateTextLayerFontSize(${layer.id}, +this.value);this.closest('div').querySelector('.font-size-val').textContent=this.value+'px'">
+        <span class="font-size-val" style="font-size:10px;color:var(--muted);min-width:32px;text-align:right;font-variant-numeric:tabular-nums;">${textSize}px</span>
+      </div>
+      ` : ''}
+
       <div class="section-label" style="margin-top:2px">Resize</div>
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
         <input type="range" min="10" max="300" value="${resizePct}"
@@ -7380,6 +8019,11 @@ function _buildLayerItem(layer) {
     }
   });
 
+  if (isText) {
+    const ta = item.querySelector('.layer-text-input');
+    if (ta) ta.value = textContent;
+  }
+
   return item;
 }
 
@@ -7388,12 +8032,17 @@ function setLayerPos(id, prop, val) {
   const l = getLayerById(id); if(!l) return;
   if (prop === 'w' || prop === 'h') {
     l[prop] = Math.max(20, val);
-    syncLayerResizeFromCurrentSize(l);
+    if (isTextLayer(l)) {
+      if (l.baseW > 0) l.resizePct = Math.max(10, Math.min(500, Math.round((l.w / l.baseW) * 100)));
+    } else {
+      syncLayerResizeFromCurrentSize(l);
+    }
   } else {
     l[prop] = val;
   }
   redrawLayersOnCanvas();
   drawSelectionHandles();
+  if (typeof saveCurrentSlide === 'function') saveCurrentSlide();
   scheduleAutoSave();
 }
 function setLayerOrder(id, val) {
@@ -7409,6 +8058,7 @@ function setLayerOpacity(id, val) {
   l.opacity = Math.max(0, Math.min(1, val));
   redrawLayersOnCanvas();
   drawSelectionHandles();
+  if (typeof saveCurrentSlide === 'function') saveCurrentSlide();
   scheduleAutoSave();
 }
 
@@ -7423,9 +8073,15 @@ function ensureLayerResizeState(layer) {
 
 function syncLayerResizeFromCurrentSize(layer) {
   ensureLayerResizeState(layer);
-  layer.baseW = Math.max(20, layer.w);
-  layer.baseH = Math.max(20, layer.h);
-  layer.resizePct = 100;
+  if (isTextLayer(layer)) {
+    if (layer.baseW > 0) {
+      layer.resizePct = Math.max(10, Math.min(500, Math.round((layer.w / layer.baseW) * 100)));
+    }
+  } else {
+    layer.baseW = Math.max(20, layer.w);
+    layer.baseH = Math.max(20, layer.h);
+    layer.resizePct = 100;
+  }
 }
 
 function setLayerResize(id, pct) {
@@ -7673,27 +8329,31 @@ let _scale = 1; // canvas CSS scale
 
 function getCanvasScale() {
   const rect = canvas.getBoundingClientRect();
-  return state.canvasW / rect.width;
+  return rect.width ? (state.canvasW / rect.width) : 1;
 }
 function toCanvasCoords(e) {
   const rect = canvas.getBoundingClientRect();
-  const s = state.canvasW / rect.width;
-  return { x: (e.clientX - rect.left) * s, y: (e.clientY - rect.top) * s };
+  const sx = rect.width ? (state.canvasW / rect.width) : 1;
+  const sy = rect.height ? (state.canvasH / rect.height) : 1;
+  return { x: (e.clientX - rect.left) * sx, y: (e.clientY - rect.top) * sy };
 }
 function hitTestHandle(px, py, layer) {
   const {x,y,w,h} = layer;
   const handles = [
-    {type:'nw', cx:x,   cy:y},
-    {type:'ne', cx:x+w, cy:y},
-    {type:'se', cx:x+w, cy:y+h},
-    {type:'sw', cx:x,   cy:y+h},
+    {type:'nw', cx:x,     cy:y},
+    {type:'ne', cx:x+w,   cy:y},
+    {type:'se', cx:x+w,   cy:y+h},
+    {type:'sw', cx:x,     cy:y+h},
     {type:'n',  cx:x+w/2, cy:y},
     {type:'e',  cx:x+w,   cy:y+h/2},
     {type:'s',  cx:x+w/2, cy:y+h},
     {type:'w',  cx:x,     cy:y+h/2},
   ];
+  const rect = canvas.getBoundingClientRect();
+  const s = rect.width ? (state.canvasW / rect.width) : 1;
+  const threshold = Math.max(16, 12 * s);
   for (const h2 of handles) {
-    if (Math.hypot(px-h2.cx, py-h2.cy) <= HANDLE_R*2) return h2.type;
+    if (Math.hypot(px-h2.cx, py-h2.cy) <= threshold) return h2.type;
   }
   return null;
 }
@@ -7701,6 +8361,7 @@ function hitTestLayer(px, py) {
   // Check from top (last) to bottom (first)
   for (let i = state.layers.length-1; i >= 0; i--) {
     const l = state.layers[i];
+    if (l.visible === false) continue;
     if (px >= l.x && px <= l.x+l.w && py >= l.y && py <= l.y+l.h) return l;
   }
   return null;
@@ -7743,7 +8404,8 @@ selectCanvas.addEventListener('mousedown', e => {
         orig:{x:sel.x,y:sel.y,w:sel.w,h:sel.h}};
       return;
     }
-    if (x>=sel.x&&x<=sel.x+sel.w&&y>=sel.y&&y<=sel.y+sel.h) {
+    const pad = 4;
+    if (x >= sel.x - pad && x <= sel.x + sel.w + pad && y >= sel.y - pad && y <= sel.y + sel.h + pad) {
       _interact = {type:'move', startX:x, startY:y, orig:{x:sel.x,y:sel.y,w:sel.w,h:sel.h}};
       return;
     }
@@ -7773,7 +8435,17 @@ function onCanvasOrGlobalMove(e) {
     if (e.target === selectCanvas) {
       if (sel) {
         const handle = hitTestHandle(x,y,sel);
-        selectCanvas.style.cursor = handle ? 'nwse-resize' : (x>=sel.x&&x<=sel.x+sel.w&&y>=sel.y&&y<=sel.y+sel.h ? 'move' : 'default');
+        if (handle) {
+          if (handle === 'nw' || handle === 'se') selectCanvas.style.cursor = 'nwse-resize';
+          else if (handle === 'ne' || handle === 'sw') selectCanvas.style.cursor = 'nesw-resize';
+          else if (handle === 'n' || handle === 's') selectCanvas.style.cursor = 'ns-resize';
+          else if (handle === 'e' || handle === 'w') selectCanvas.style.cursor = 'ew-resize';
+          else selectCanvas.style.cursor = 'nwse-resize';
+        } else if (x >= sel.x - 4 && x <= sel.x + sel.w + 4 && y >= sel.y - 4 && y <= sel.y + sel.h + 4) {
+          selectCanvas.style.cursor = 'move';
+        } else {
+          selectCanvas.style.cursor = 'default';
+        }
       } else { selectCanvas.style.cursor = 'default'; }
     }
     return;
@@ -7781,8 +8453,8 @@ function onCanvasOrGlobalMove(e) {
   if (!sel) return;
   const dx = x - _interact.startX, dy = y - _interact.startY;
   if (_interact.type === 'move') {
-    sel.x = _interact.orig.x + dx;
-    sel.y = _interact.orig.y + dy;
+    sel.x = Math.round(_interact.orig.x + dx);
+    sel.y = Math.round(_interact.orig.y + dy);
   } else {
     // Resize
     const o = _interact.orig;
@@ -7792,12 +8464,26 @@ function onCanvasOrGlobalMove(e) {
     if (h2.includes('s')) nh = Math.max(20, o.h + dy);
     if (h2.includes('w')) { nx = o.x+dx; nw = Math.max(20, o.w-dx); }
     if (h2.includes('n')) { ny = o.y+dy; nh = Math.max(20, o.h-dy); }
-    // Shift = constrain to original aspect ratio
-    if (e.shiftKey) {
-      const ar = o.w / o.h;
-      if (nw / nh > ar) { nh = nw / ar; } else { nw = nh * ar; }
+    // Shift = constrain to aspect ratio OR corner drag on text/asset/doodle
+    if (e.shiftKey || (h2.length === 2 && (isTextLayer(sel) || sel.kind === 'asset' || sel.kind === 'image' || sel.kind === 'doodle'))) {
+      const ar = (o.w > 0 && o.h > 0) ? (o.w / o.h) : 1;
+      if (h2 === 'se' || h2 === 'nw' || h2 === 'ne' || h2 === 'sw') {
+        const scaleFactor = Math.max(0.1, Math.max(nw / o.w, nh / o.h));
+        nw = Math.max(20, Math.round(o.w * scaleFactor));
+        nh = Math.max(20, Math.round(o.h * scaleFactor));
+        if (h2.includes('w')) nx = o.x + (o.w - nw);
+        if (h2.includes('n')) ny = o.y + (o.h - nh);
+      } else {
+        if (nw / nh > ar) { nh = nw / ar; } else { nw = nh * ar; }
+      }
     }
-    sel.x=nx; sel.y=ny; sel.w=nw; sel.h=nh;
+    sel.x = Math.round(nx);
+    sel.y = Math.round(ny);
+    sel.w = Math.round(nw);
+    sel.h = Math.round(nh);
+    if (sel.baseW > 0) {
+      sel.resizePct = Math.max(10, Math.min(500, Math.round((sel.w / sel.baseW) * 100)));
+    }
   }
   redrawLayersOnCanvas();
   drawSelectionHandles();
@@ -7806,6 +8492,13 @@ function onCanvasOrGlobalMove(e) {
     const inp = document.querySelector(`#ls-${sel.id} input[onchange*="'${p}'"]`);
     if(inp) inp.value = Math.round(sel[p]);
   });
+  const resizeSlider = document.querySelector(`#ls-${sel.id} input[oninput*="setLayerResize"]`);
+  if (resizeSlider && sel.resizePct > 0) {
+    resizeSlider.value = Math.round(sel.resizePct);
+    updateRangeFill(resizeSlider);
+    const valSpan = resizeSlider.closest('div')?.querySelector('.resize-val');
+    if (valSpan) valSpan.textContent = Math.round(sel.resizePct) + '%';
+  }
 }
 
 selectCanvas.addEventListener('mousemove', onCanvasOrGlobalMove);
@@ -7818,9 +8511,18 @@ selectCanvas.addEventListener('dblclick', e => {
   if (state.playing || _ts.placing) return;
   const {x,y} = toCanvasCoords(e);
   const hit = hitTestLayer(x, y);
-  if (hit && hit.kind === 'text') {
-    switchTab('text');
-    openTextEditor(hit.x, hit.y, hit);
+  if (hit) {
+    selectLayer(hit.id);
+    if (isTextLayer(hit)) {
+      const itemEl = document.querySelector(`.layer-item[data-id="${hit.id}"]`);
+      if (itemEl) {
+        const ta = itemEl.querySelector('.layer-text-input');
+        if (ta) {
+          ta.focus();
+          ta.select();
+        }
+      }
+    }
   }
 });
 
@@ -7837,7 +8539,9 @@ document.addEventListener('mouseup', () => {
       : (sel.x !== orig.x || sel.y !== orig.y);
     if (changed) pushUndoSnapshot();
     if (wasInteract === 'resize') {
-      syncLayerResizeFromCurrentSize(sel);
+      if (!isTextLayer(sel)) {
+        syncLayerResizeFromCurrentSize(sel);
+      }
       renderLayerList();
       drawSelectionHandles();
       scheduleAutoSave();
@@ -7847,6 +8551,10 @@ document.addEventListener('mouseup', () => {
   }
 });
 
+window.addEventListener('blur', () => {
+  _interact = null;
+});
+
 
 
 // ─── UI HANDLERS ───
@@ -7854,20 +8562,118 @@ function switchTab(m) {
   state.mode = m;
   const imgPanel = document.getElementById('image-panel');
   const txtPanel = document.getElementById('text-panel');
-  const ddlPanel = document.getElementById('doodles-panel');
-  if (imgPanel) imgPanel.style.display = m==='image'?'block':'none';
-  if (txtPanel) txtPanel.style.display  = m==='text' ?'block':'none';
-  if (ddlPanel) ddlPanel.style.display = m==='doodles'?'block':'none';
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>
-    b.classList.toggle('active',(i===0&&m==='image')||(i===1&&m==='text')||(i===2&&m==='doodles')));
+  const astPanel = document.getElementById('assets-panel') || document.getElementById('doodles-panel');
+  const aiPanel  = document.getElementById('ai-slide-panel');
+
+  if (imgPanel) imgPanel.style.display = (m === 'image') ? 'block' : 'none';
+  if (txtPanel) txtPanel.style.display = (m === 'text') ? 'block' : 'none';
+  if (astPanel) astPanel.style.display = (m === 'assets' || m === 'doodles') ? 'block' : 'none';
+  if (aiPanel)  aiPanel.style.display  = (m === 'ai-slide') ? 'block' : 'none';
+
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    const text = b.textContent.toLowerCase();
+    const active = (m === 'image' && text.includes('image')) ||
+                   (m === 'text' && text.includes('text')) ||
+                   ((m === 'assets' || m === 'doodles') && (text.includes('asset') || text.includes('doodle'))) ||
+                   (m === 'ai-slide' && text.includes('ai'));
+    b.classList.toggle('active', active);
+  });
+
   // Cancel text placement/editing when switching away from text tab
   if (m !== 'text') {
     deactivateTextPlacement();
     closeTextEditor(true);
   }
-  if (m === 'doodles' && window.DoodleLibrary) {
-    window.DoodleLibrary.renderDoodleGrid();
-    window.DoodleLibrary.renderRecentAssets();
+  if ((m === 'assets' || m === 'doodles') && window.AssetLibrary) {
+    window.AssetLibrary.renderCategoryPills();
+    window.AssetLibrary.renderAssetGrid();
+    window.AssetLibrary.renderRecentAssets();
+  }
+}
+
+// ── AI Slide Generator UI Handlers ──
+function toggleAiSettings() {
+  const d = document.getElementById('ai-settings-drawer');
+  if (!d) return;
+  const isOpen = d.style.display === 'block';
+  d.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen && window.AiSlideGenerator) {
+    const cfg = window.AiSlideGenerator.getAiConfig();
+    const sel = document.getElementById('ai-provider-select');
+    const key = document.getElementById('ai-api-key-input');
+    const mdl = document.getElementById('ai-model-input');
+    if (sel) sel.value = cfg.provider;
+    if (key) key.value = cfg.apiKey;
+    if (mdl) mdl.value = cfg.model;
+    onAiProviderChange(cfg.provider);
+  }
+}
+
+function onAiProviderChange(val) {
+  const grp = document.getElementById('ai-key-group');
+  if (grp) grp.style.display = (val === 'offline') ? 'none' : 'block';
+}
+
+function saveAiSettings() {
+  const provider = document.getElementById('ai-provider-select').value;
+  const key = document.getElementById('ai-api-key-input').value;
+  const model = document.getElementById('ai-model-input').value;
+  if (window.AiSlideGenerator) {
+    window.AiSlideGenerator.saveAiConfig(provider, key, model);
+  }
+  const d = document.getElementById('ai-settings-drawer');
+  if (d) d.style.display = 'none';
+}
+
+async function triggerAiSlideGeneration() {
+  const promptInput = document.getElementById('ai-slide-prompt');
+  const prompt = promptInput ? promptInput.value.trim() : '';
+  if (!prompt) {
+    if (window.showToast) window.showToast('Please describe the slide you want to create');
+    return;
+  }
+  const style = document.getElementById('ai-slide-style').value;
+  const btn = document.getElementById('ai-generate-btn');
+  const origText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span>⏳ Generating layout...</span>';
+
+  try {
+    const slide = await window.AiSlideGenerator.generateSlide(prompt, style);
+    const box = document.getElementById('ai-slide-preview-box');
+    const countEl = document.getElementById('ai-preview-count');
+    const listEl = document.getElementById('ai-preview-elements-list');
+
+    const elements = (slide && Array.isArray(slide.elements)) ? slide.elements : [];
+    if (box) box.style.display = 'block';
+    if (countEl) countEl.textContent = `${elements.length} elements`;
+    if (listEl) {
+      if (!elements.length) {
+        listEl.innerHTML = '<div style="padding:6px 0;color:var(--muted);font-style:italic;">No elements generated</div>';
+      } else {
+        listEl.innerHTML = elements.map(el => `
+          <div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;">
+            <span>${el.type === 'text' ? `📝 "${(el.text || '').slice(0, 24)}"` : `🎨 ${el.assetId || el.name || 'Asset'}`}</span>
+            <span style="color:var(--muted);font-size:9px;">pos: (${el.x}, ${el.y})</span>
+          </div>
+        `).join('');
+      }
+    }
+  } catch (err) {
+    console.error('AI generation failed:', err);
+    if (window.showToast) window.showToast('⚠️ AI Generation failed: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = origText;
+  }
+}
+
+function applyAiSlide() {
+  const slide = window.AiSlideGenerator ? window.AiSlideGenerator.getLastGeneratedSlide() : null;
+  if (slide) {
+    window.AiSlideGenerator.applySlideToCanvas(slide);
+    const box = document.getElementById('ai-slide-preview-box');
+    if (box) box.style.display = 'none';
   }
 }
 function selectColor(el) {
@@ -9489,7 +10295,7 @@ function openTextEditor(canvasX, canvasY, existingLayer) {
   updateTextOverlayStyle();
 
   const ta = document.getElementById('text-editor-ta');
-  ta.value = existingLayer ? (existingLayer._textContent || '') : '';
+  ta.value = existingLayer ? (typeof getTextLayerString === 'function' ? getTextLayerString(existingLayer) : (existingLayer._textContent || existingLayer.name || '')) : '';
   document.getElementById('text-editor-overlay').style.display = 'block';
   document.getElementById('text-editor-frame').style.display   = 'block';
   redrawLayersOnCanvas(); // hide the original layer while editor is open
@@ -9655,7 +10461,7 @@ function _commitTextLayer(text) {
   }
   pushUndoSnapshot();
 
-  const id = ++_layerIdCounter;
+  const id = getNextLayerId();
   const img = new Image();
   const layer = {
     id,
@@ -9717,6 +10523,96 @@ function _commitTextLayer(text) {
 
 // Legacy wrapper kept for any older call sites
 function addTextLayer() { activateTextPlacement(); }
+
+// Programmatic creation of an independent text layer (used by AI generator and templates)
+window.createTextLayer = function(text, posX, posY, opts = {}) {
+  const font = opts.font || 'Caveat';
+  const size = opts.fontSize || opts.size || 52;
+  const bold = !!opts.bold;
+  const italic = !!opts.italic;
+  const color = opts.color || '#1e293b';
+  const align = opts.align || 'left';
+  const lh = opts.lineHeight || 1.3;
+  const sp = opts.spacing || 0;
+  const animStyle = opts.animStyle || 'spec-text';
+  const lines = String(text || '').split('\n');
+
+  const probe = document.createElement('canvas');
+  probe.width = state.canvasW || 1280;
+  probe.height = 4;
+  const pctx = probe.getContext('2d');
+  const fontStr = `${italic ? 'italic ' : ''}${bold ? 'bold ' : ''}${size}px '${font}', sans-serif`;
+  pctx.font = fontStr;
+  pctx.letterSpacing = sp + 'px';
+  const maxW = Math.min(state.canvasW || 1280, Math.max(...lines.map(l => pctx.measureText(l).width)) + size * 0.4);
+  const lineH = size * lh;
+  const totalH = lines.length * lineH + size * 0.3;
+
+  const tc = document.createElement('canvas');
+  tc.width = Math.max(10, Math.ceil(maxW));
+  tc.height = Math.max(10, Math.ceil(totalH));
+  const tctx = tc.getContext('2d');
+  tctx.font = fontStr;
+  tctx.letterSpacing = sp + 'px';
+  tctx.fillStyle = color;
+  tctx.textBaseline = 'top';
+  tctx.textAlign = align === 'center' ? 'center' : align === 'right' ? 'right' : 'left';
+  const tx = align === 'center' ? tc.width / 2 : align === 'right' ? tc.width : 0;
+  lines.forEach((ln, i) => tctx.fillText(ln, tx, i * lineH + size * 0.1));
+
+  pushUndoSnapshot();
+  const id = getNextLayerId();
+  const img = new Image();
+  const layer = {
+    id,
+    name: lines[0].slice(0, 24) || 'Text',
+    img,
+    _canvas: tc,
+    x: Math.round(posX !== null && posX !== undefined ? posX : (state.canvasW - maxW) / 2),
+    y: Math.round(posY !== null && posY !== undefined ? posY : (state.canvasH - totalH) / 2),
+    w: Math.ceil(maxW),
+    h: Math.ceil(totalH),
+    baseW: Math.ceil(maxW),
+    baseH: Math.ceil(totalH),
+    resizePct: 100,
+    animStyle: animStyle,
+    hand: state.hand || 'custom1',
+    animOrder: opts.animOrder || null,
+    opacity: opts.opacity !== undefined ? opts.opacity : 1,
+    visible: true,
+    groupId: null,
+    speed: 40,
+    handSpeed: 6,
+    chunks: 30,
+    specChunks: 35,
+    hasPngAlpha: true,
+    moveDirection: 'left',
+    moveEasing: 'ease-out',
+    moveHand: true,
+    kind: 'text',
+    _textContent: text,
+    _textFont: font,
+    _textSize: size,
+    _textBold: bold,
+    _textItalic: italic,
+    _textAlign: align,
+    _textColor: color,
+    _textLineHeight: lh,
+    _textSpacing: sp,
+  };
+
+  state.layers.push(layer);
+  img.onload = () => {
+    redrawLayersOnCanvas();
+  };
+  img.src = tc.toDataURL();
+
+  renderLayerList();
+  selectLayer(id);
+  redrawLayersOnCanvas();
+  scheduleAutoSave();
+  return layer;
+};
 
 // ── Initialise font picker on load ────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', initFontPicker);

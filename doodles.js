@@ -638,7 +638,9 @@
     }
     container.innerHTML = recents.map(item => `
       <div class="recent-doodle-chip" title="${item.name}" onclick="DoodleLibrary.insertRecent('${item.id}')">
-        ${item.svg ? item.svg : `<img src="${item.src}" style="width:20px;height:20px;object-fit:contain;">`}
+        <div class="recent-doodle-thumb">
+          ${item.svg ? item.svg : `<img src="${item.src}">`}
+        </div>
         <span class="recent-doodle-label">${item.name}</span>
       </div>
     `).join('');
